@@ -1,7 +1,6 @@
 # Grill City - Настольное приложение для "Гриль Сити" специализированного магазина угольных и газовых грилей
 
-![Icon](GrillHouseNNProg/Assets/Icon/LogoInKube.png)
-
+![Icon](GrillHouseNNProg/Assets/LogoInKube.png)
 
 ## Описание
 
