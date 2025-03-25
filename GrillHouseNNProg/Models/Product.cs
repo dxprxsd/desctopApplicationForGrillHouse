@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace GrillHouseNNProg.Models;
+
+public partial class Product
+{
+    public int Id { get; set; }
+
+    public string ProductName { get; set; } = null!;
+
+    public int? ProductTypeId { get; set; }
+
+    public string? Photo { get; set; }
+
+    public int? QuantityInStock { get; set; }
+
+    public double Price { get; set; }
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public virtual ProductType? ProductType { get; set; }
+}

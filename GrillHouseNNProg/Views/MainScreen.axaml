@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:vm="using:GrillHouseNNProg.ViewModels"
+			 xmlns:conv="using:GrillHouseNNProg.Resources"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GrillHouseNNProg.MainScreen"
+			 x:DataType="vm:MainWindowViewModel">
+
+	<UserControl.Resources>
+		<!-- Добавление конвертера в ресурсы -->
+		<conv:ImageConverter x:Key="myImageConverter"/>
+	</UserControl.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<ComboBox Margin="5" Grid.Row="0" ItemsSource="{Binding ProductTypes}" Background="White" HorizontalAlignment="Left" Width="250" VerticalAlignment="Center" DisplayMemberBinding="{Binding TypeName}" SelectedItem="{Binding SelectedProductType}" />
+
+		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+			<ItemsControl ItemsSource="{Binding Productss}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<UniformGrid Columns="3" HorizontalAlignment="Center" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Border BorderThickness="1" BorderBrush="Gray" Padding="10" Margin="10" CornerRadius="8" Background="#F5F5F5" Height="350">
+							<StackPanel MinHeight="330">
+								<Image Source="{Binding Photo, Converter={StaticResource myImageConverter}}" Width="200" Height="170" Stretch="UniformToFill" />
+								<TextBlock Text="{Binding ProductName}" FontSize="18" FontWeight="Bold" Margin="5,10,5,0" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="220"/>
+								<TextBlock Text="{Binding QuantityInStock}" FontSize="14" Margin="5,5,5,0" TextAlignment="Center" />
+								<TextBlock Text="{Binding Price}" FontSize="14" FontWeight="Bold" Foreground="Green" Margin="5,5,5,10" TextAlignment="Center" />
+							</StackPanel>
+						</Border>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+
+		<!-- Надпись "Товар временно отсутствует в продаже" -->
+		<TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Товар временно отсутствует в продаже"
+			   FontSize="18"
+			   FontWeight="Bold"
+			   Foreground="Red"
+			   IsVisible="{Binding IsProductListEmpty}"/>
+
+	</Grid>
+</UserControl>

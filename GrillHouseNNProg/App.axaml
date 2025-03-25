@@ -1,0 +1,69 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="GrillHouseNNProg.App"
+             xmlns:local="using:GrillHouseNNProg"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <FluentTheme />
+
+		<Style Selector="TextBlock.Header">
+			<Setter Property="FontFamily" Value="PF Reminder Pro" />
+			<Setter Property="HorizontalAlignment" Value="Center" />
+			<Setter Property="FontSize" Value="20"/>
+			<Setter Property="VerticalAlignment" Value="Center" />
+			<Setter Property="FontWeight" Value="Bold"/>
+			<Setter Property="Foreground" Value="#FFFFFFFF"/>
+		</Style>
+		<Style Selector="TextBlock.Default">
+			<Setter Property="FontFamily" Value="PF Reminder Pro"/>
+			<Setter Property="FontSize" Value="16"/>
+			<Setter Property="Height" Value="30"/>
+		</Style>
+
+		<Style Selector="Button.ButtonTemplate">
+			<!-- Градиентный фон кнопки -->
+			<Setter Property="Background">
+				<Setter.Value>
+					<LinearGradientBrush StartPoint="0%,50%" EndPoint="100%,50%">
+						<GradientStops>
+							<GradientStop Offset="0.0" Color="#A7262F"/>
+							<GradientStop Offset="1.0" Color="#000000"/>
+						</GradientStops>
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+
+			<!-- Закругленные углы -->
+			<Setter Property="CornerRadius" Value="12"/>
+
+			<!-- Выравнивание контента по центру -->
+			<Setter Property="HorizontalContentAlignment" Value="Center"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+
+			<!-- Цвет текста белый -->
+			<Setter Property="Foreground" Value="White"/>
+		</Style>
+
+		<Style Selector="Button.ButtonInTemplate">
+			<Setter Property="Background">
+				<Setter.Value>
+					<LinearGradientBrush>
+						<GradientStop Offset="0" Color="#375cd3" />
+						<GradientStop Offset="1" Color="#002087" />
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+
+
+
+
+	</Application.Styles>
+</Application>
