@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:vm="using:GrillHouseNNProg.ViewModels"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GrillHouseNNProg.Views.CreateOrderScreen"
+			 x:DataType="vm:CreateOrderScreenViewModel">
+	
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="50" />
+		</Grid.RowDefinitions>
+
+		<TextBlock Classes="Header" Foreground="Black" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Оформление продажи"/>
+
+		<StackPanel Grid.Row="1" Margin="5" Width="300">
+			<!-- Выбор товара -->
+			<ComboBox Margin="5"
+					  ItemsSource="{Binding Products}"
+					  Background="White"
+					  HorizontalAlignment="Center"
+					  Width="200"
+					  VerticalAlignment="Center"
+					  DisplayMemberBinding="{Binding ProductName}"
+					  SelectedItem="{Binding SelectedProduct}" />
+
+			<TextBlock Text="Количество товара:" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
+
+			<!-- Ввод количества -->
+			<TextBox HorizontalAlignment="Center"
+					 Width="200"
+					 VerticalAlignment="Center"
+					 Text="{Binding EnteredQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+			<TextBlock Text="Цена товара:" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
+
+			<!-- Автоматическая цена -->
+			<TextBlock Text="{Binding ProductPrice}"
+					   HorizontalAlignment="Center"
+					   FontWeight="Bold"
+					   Foreground="Blue"
+					   VerticalAlignment="Center" />
+
+			<TextBlock Text="Скидка:" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
+
+			<!-- Выбор скидки -->
+			<ComboBox Margin="5"
+					  ItemsSource="{Binding Discounts}"
+					  Background="White"
+					  HorizontalAlignment="Center"
+					  Width="200"
+					  VerticalAlignment="Center"
+					  DisplayMemberBinding="{Binding DiscountPercent}"
+					  SelectedItem="{Binding SelectedDiscount}" />
+
+			<!-- Кнопка оформления заказа -->
+			<Button Margin="5"
+					Classes="ButtonTemplate"
+					Content="Оформить заказ"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					Command="{Binding CreateOrderCommand}" />
+		</StackPanel>
+	</Grid>
+
+</UserControl>

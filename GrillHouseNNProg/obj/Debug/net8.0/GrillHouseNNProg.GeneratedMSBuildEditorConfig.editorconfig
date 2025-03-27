@@ -22,8 +22,17 @@ build_property.EnableGeneratedComInterfaceComImportInterop =
 [C:/Users/admin/source/repos/GrillHouseNNProg/GrillHouseNNProg/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/admin/source/repos/GrillHouseNNProg/GrillHouseNNProg/Views/AddingCountProductsScreen.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/admin/source/repos/GrillHouseNNProg/GrillHouseNNProg/Views/CreateOrderScreen.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/admin/source/repos/GrillHouseNNProg/GrillHouseNNProg/Views/MainScreen.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [C:/Users/admin/source/repos/GrillHouseNNProg/GrillHouseNNProg/Views/MainWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/admin/source/repos/GrillHouseNNProg/GrillHouseNNProg/Views/OrderHistoryScreen.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

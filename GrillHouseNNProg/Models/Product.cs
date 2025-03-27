@@ -11,6 +11,8 @@ public partial class Product
 
     public int? ProductTypeId { get; set; }
 
+    public int? ProviderId { get; set; }
+
     public string? Photo { get; set; }
 
     public int? QuantityInStock { get; set; }
@@ -20,4 +22,6 @@ public partial class Product
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public virtual ProductType? ProductType { get; set; }
+
+    public virtual Provider? Provider { get; set; }
 }

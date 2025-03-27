@@ -23,6 +23,8 @@ public partial class GrillcitynnContext : DbContext
 
     public virtual DbSet<ProductType> ProductTypes { get; set; }
 
+    public virtual DbSet<Provider> Providers { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=grillcitynn;Username=postgres;Password=123");
@@ -73,11 +75,16 @@ public partial class GrillcitynnContext : DbContext
                 .HasMaxLength(200)
                 .HasColumnName("product__name");
             entity.Property(e => e.ProductTypeId).HasColumnName("product_type_id");
+            entity.Property(e => e.ProviderId).HasColumnName("provider_id");
             entity.Property(e => e.QuantityInStock).HasColumnName("quantity_in_stock");
 
             entity.HasOne(d => d.ProductType).WithMany(p => p.Products)
                 .HasForeignKey(d => d.ProductTypeId)
                 .HasConstraintName("products_product_type_id_fkey");
+
+            entity.HasOne(d => d.Provider).WithMany(p => p.Products)
+                .HasForeignKey(d => d.ProviderId)
+                .HasConstraintName("products_provider_id_fkey");
         });
 
         modelBuilder.Entity<ProductType>(entity =>
@@ -90,6 +97,18 @@ public partial class GrillcitynnContext : DbContext
             entity.Property(e => e.TypeName)
                 .HasMaxLength(100)
                 .HasColumnName("type_name");
+        });
+
+        modelBuilder.Entity<Provider>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("providers_pkey");
+
+            entity.ToTable("providers");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ProviderName)
+                .HasMaxLength(50)
+                .HasColumnName("provider_name");
         });
 
         OnModelCreatingPartial(modelBuilder);

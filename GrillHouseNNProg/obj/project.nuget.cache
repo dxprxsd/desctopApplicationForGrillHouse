@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "WxLNNSQYaYs=",
+  "dgSpecHash": "4zz/q+Jpy6E=",
   "success": true,
   "projectFilePath": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\GrillHouseNNProg.csproj",
   "expectedPackageFiles": [
@@ -48,8 +48,10 @@
     "C:\\Users\\admin\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\npgsql\\7.0.7\\npgsql.7.0.7.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\7.0.18\\npgsql.entityframeworkcore.postgresql.7.0.18.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\questpdf\\2023.4.2\\questpdf.2023.4.2.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\reactiveui\\18.3.1\\reactiveui.18.3.1.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\skiasharp\\2.88.8\\skiasharp.2.88.8.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\skiasharp.harfbuzz\\2.88.3\\skiasharp.harfbuzz.2.88.3.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\skiasharp.nativeassets.linux\\2.88.8\\skiasharp.nativeassets.linux.2.88.8.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.8\\skiasharp.nativeassets.macos.2.88.8.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\skiasharp.nativeassets.webassembly\\2.88.8\\skiasharp.nativeassets.webassembly.2.88.8.nupkg.sha512",

@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:vm="using:GrillHouseNNProg.ViewModels"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GrillHouseNNProg.Views.AddingCountProductsScreen"
+			 x:DataType="vm:AddingCountProductsScreenViewModel">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="50" />
+		</Grid.RowDefinitions>
+		
+		<TextBlock Text="Добавление товара" Classes="Header" Foreground="Black" />
+
+		<StackPanel  Grid.Row="1" Margin="5" Width="300">
+			<ComboBox Margin="5" ItemsSource="{Binding Products}" Background="White" HorizontalAlignment="Center" Width="200" VerticalAlignment="Center" DisplayMemberBinding="{Binding ProductName}" SelectedItem="{Binding SelectedProduct}" />
+			<TextBlock Text="Количество товара:" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
+			<!-- Привязка введенного количества к EnteredQuantity -->
+			<TextBox HorizontalAlignment="Center" Width="200" VerticalAlignment="Center"
+                     Text="{Binding EnteredQuantity, Mode=TwoWay}" />
+
+			<!-- Кнопка для обновления количества товара -->
+			<Button Margin="5" Classes="ButtonTemplate" Content="Обновить количество" HorizontalAlignment="Center" VerticalAlignment="Center"
+					Command="{Binding UpdateProductStockCommand}" />
+
+			
+		</StackPanel>
+
+		<Border Grid.Row="2" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="0">
+			<Border.Effect>
+				<DropShadowEffect BlurRadius="15" Opacity="0.7"/>
+			</Border.Effect>
+			<StackPanel Orientation="Vertical">
+				<!-- Кнопка для обновления количества товара -->
+				<Button Margin="5" Classes="ButtonTemplate" Content="Собрать отчет о движении товара" HorizontalAlignment="Right" VerticalAlignment="Center"
+						Command="{Binding ExportToPdf}" />
+			</StackPanel>
+		</Border>
+	</Grid>
+</UserControl>

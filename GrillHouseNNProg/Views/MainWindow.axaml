@@ -23,7 +23,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="70" />
 			<RowDefinition Height="*" />
-			<RowDefinition Height="50" />
+			<RowDefinition Height="20" />
 		</Grid.RowDefinitions>
 
 		<!-- Контентная область -->
@@ -58,7 +58,7 @@
 					<DropShadowEffect BlurRadius="15" Opacity="0.7"/>
 				</Border.Effect>
 				<StackPanel Orientation="Vertical">
-					<Button Content="Главное меню" Classes="ButtonTemplate" Width="170" Height="36" Margin="5" />
+					<Button Content="Главное меню" Command="{Binding GoToMainScreen}" Classes="ButtonTemplate" Width="170" Height="36" Margin="5" />
 				</StackPanel>
 			</Border>
 
@@ -67,7 +67,7 @@
 					<DropShadowEffect BlurRadius="15" Opacity="0.7"/>
 				</Border.Effect>
 				<StackPanel Orientation="Vertical">
-					<Button Content="Оформление покупки" Classes="ButtonTemplate" Width="170" Height="36" Margin="5" />
+					<Button Content="Оформление покупки" Command="{Binding GoToCreateOrderScreen}" Classes="ButtonTemplate" Width="170" Height="36" Margin="5" />
 				</StackPanel>
 			</Border>
 
@@ -76,7 +76,16 @@
 					<DropShadowEffect BlurRadius="15" Opacity="0.7"/>
 				</Border.Effect>
 				<StackPanel Orientation="Vertical">
-					<Button Content="Отчеты" Classes="ButtonTemplate" Width="170" Height="36" Margin="5" />
+					<Button Content="Приход товаров" Command="{Binding GoToAddinCountProductScreen}" Classes="ButtonTemplate" Width="170" Height="36" Margin="5" />
+				</StackPanel>
+			</Border>
+
+			<Border HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="0">
+				<Border.Effect>
+					<DropShadowEffect BlurRadius="15" Opacity="0.7"/>
+				</Border.Effect>
+				<StackPanel Orientation="Vertical">
+					<Button Content="Продажи" Command="{Binding GoToOrderHistoryScreen}" Classes="ButtonTemplate" Width="170" Height="36" Margin="5" />
 				</StackPanel>
 			</Border>
 			

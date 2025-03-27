@@ -6,6 +6,7 @@ using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Microsoft.VisualBasic;
+using GrillHouseNNProg.Views;
 
 namespace GrillHouseNNProg.ViewModels
 {
@@ -121,5 +122,10 @@ namespace GrillHouseNNProg.ViewModels
             // Проверяем, пуст ли список товаров
             IsProductListEmpty = Productss.Count == 0;
         }
+
+        public void GoToMainScreen() => Us = new MainScreen() { DataContext = new MainWindowViewModel(_db) };
+        public void GoToCreateOrderScreen() => Us = new CreateOrderScreen() { DataContext = new CreateOrderScreenViewModel(_db) };
+        public void GoToOrderHistoryScreen() => Us = new OrderHistoryScreen() { DataContext = new OrderHistoryScreenViewModel(_db) };
+        public void GoToAddinCountProductScreen() => Us = new AddingCountProductsScreen() { DataContext = new AddingCountProductsScreenViewModel(_db) };
     }
 }

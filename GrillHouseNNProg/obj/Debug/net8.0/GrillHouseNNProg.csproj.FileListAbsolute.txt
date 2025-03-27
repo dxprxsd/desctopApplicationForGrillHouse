@@ -112,3 +112,6 @@ C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\R
 C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\Resources\image8.jpg
 C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\Resources\image9.jpg
 C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\Resources\image10.jpg
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\obj\Debug\net8.0\GrillHouseNNProg.sourcelink.json
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\QuestPDF.dll
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\SkiaSharp.HarfBuzz.dll
