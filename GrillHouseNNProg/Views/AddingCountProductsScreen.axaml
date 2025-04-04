@@ -10,7 +10,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="50" />
 			<RowDefinition Height="*" />
-			<RowDefinition Height="50" />
+			<RowDefinition Height="80" />
 		</Grid.RowDefinitions>
 		
 		<TextBlock Text="Добавление товара" Classes="Header" Foreground="Black" />
@@ -26,10 +26,10 @@
 			<Button Margin="5" Classes="ButtonTemplate" Content="Обновить количество" HorizontalAlignment="Center" VerticalAlignment="Center"
 					Command="{Binding UpdateProductStockCommand}" />
 
-			
+			<TextBlock Text="{Binding ErrorMessage}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
 		</StackPanel>
 
-		<Border Grid.Row="2" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="0">
+		<Border Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" BorderBrush="Black" BorderThickness="0">
 			<Border.Effect>
 				<DropShadowEffect BlurRadius="15" Opacity="0.7"/>
 			</Border.Effect>
@@ -39,5 +39,15 @@
 						Command="{Binding ExportToPdf}" />
 			</StackPanel>
 		</Border>
+
+
+
+		<StackPanel Grid.Row="2" Orientation="Vertical">
+			<DatePicker SelectedDate="{Binding StartDate}" Margin="5"/>
+
+			<DatePicker SelectedDate="{Binding EndDate}" Margin="5"/>
+		</StackPanel>
+		
+
 	</Grid>
 </UserControl>

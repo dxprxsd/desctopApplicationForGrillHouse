@@ -21,6 +21,8 @@ public partial class GrillcitynnContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<ProductMovement> ProductMovements { get; set; }
+
     public virtual DbSet<ProductType> ProductTypes { get; set; }
 
     public virtual DbSet<Provider> Providers { get; set; }
@@ -85,6 +87,26 @@ public partial class GrillcitynnContext : DbContext
             entity.HasOne(d => d.Provider).WithMany(p => p.Products)
                 .HasForeignKey(d => d.ProviderId)
                 .HasConstraintName("products_provider_id_fkey");
+        });
+
+        modelBuilder.Entity<ProductMovement>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("product_movements_pkey");
+
+            entity.ToTable("product_movements");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.MovementDate)
+                .HasDefaultValueSql("now()")
+                .HasColumnName("movement_date");
+            entity.Property(e => e.MovementType).HasColumnName("movement_type");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductMovements)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("product_movements_product_id_fkey");
         });
 
         modelBuilder.Entity<ProductType>(entity =>

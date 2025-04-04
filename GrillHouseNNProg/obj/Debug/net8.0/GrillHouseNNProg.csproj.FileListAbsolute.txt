@@ -115,3 +115,13 @@ C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\R
 C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\obj\Debug\net8.0\GrillHouseNNProg.sourcelink.json
 C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\QuestPDF.dll
 C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\SkiaSharp.HarfBuzz.dll
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\ClosedXML.dll
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\ClosedXML.Parser.dll
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\DocumentFormat.OpenXml.Framework.dll
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\ExcelNumberFormat.dll
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\RBush.dll
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\SixLabors.Fonts.dll
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\System.IO.Packaging.dll
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\System.Speech.dll
+C:\Users\admin\source\repos\GrillHouseNNProg\GrillHouseNNProg\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Speech.dll

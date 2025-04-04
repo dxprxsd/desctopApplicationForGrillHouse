@@ -20,8 +20,30 @@ namespace GrillHouseNNProg.ViewModels
         private static Dictionary<int, int> _initialStock; // Начальное количество товаров (статическое)
         private static Dictionary<int, int> _receivedStock = new(); // Сделали статическим, чтобы данные сохранялись при переходе на другие экраны
         private int _enteredQuantity; // Для хранения введенного количества товара
+        private string _errorMessage;
+        private DateTime _startDate = DateTime.Today.AddDays(-7);
+        private DateTime _endDate = DateTime.Now;
+
+        public DateTimeOffset StartDate
+        {
+            get => new DateTimeOffset(_startDate, TimeZoneInfo.Local.GetUtcOffset(_startDate));
+            set => this.RaiseAndSetIfChanged(ref _startDate, DateTime.SpecifyKind(new DateTime(value.Year, value.Month, value.Day), DateTimeKind.Local));
+        }
+
+        public DateTimeOffset EndDate
+        {
+            get => new DateTimeOffset(_endDate, TimeZoneInfo.Local.GetUtcOffset(_endDate));
+            set => this.RaiseAndSetIfChanged(ref _endDate, DateTime.SpecifyKind(new DateTime(value.Year, value.Month, value.Day), DateTimeKind.Local));
+        }
+
 
         public ReactiveCommand<System.Reactive.Unit, System.Reactive.Unit> UpdateProductStockCommand { get; }
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set => this.RaiseAndSetIfChanged(ref _errorMessage, value);
+        }
 
         public ObservableCollection<Product> Products
         {
@@ -95,12 +117,26 @@ namespace GrillHouseNNProg.ViewModels
                     _db.Products.Update(product);
                     _db.SaveChanges(); // Сохраняем изменения сразу
                 }
+                ErrorMessage = "Готово!";
             }
+        }
+
+        private List<ProductMovement> GetProductMovementsInRange()
+        {
+            DateOnly startDateOnly = DateOnly.FromDateTime(_startDate);
+            DateOnly endDateOnly = DateOnly.FromDateTime(_endDate);
+
+            return _db.ProductMovements
+                .Where(pm => pm.MovementDate.HasValue &&
+                             pm.MovementDate.Value >= startDateOnly &&
+                             pm.MovementDate.Value <= endDateOnly)
+                .ToList();
         }
 
         public void ExportToPdf()
         {
-            string filePath = "Отчет_по_товарам.pdf";
+            string filePath = "Отчет_по_движению_товаров.pdf";
+            var movements = GetProductMovementsInRange();
 
             QuestPDF.Fluent.Document.Create(container =>
             {
@@ -110,7 +146,7 @@ namespace GrillHouseNNProg.ViewModels
                     page.Margin(20);
                     page.DefaultTextStyle(x => x.FontFamily("Arial"));
 
-                    page.Header().AlignCenter().Text("Отчет по товарам")
+                    page.Header().AlignCenter().Text("Отчет о движении товаров")
                         .FontSize(20).SemiBold();
 
                     page.Content().Table(table =>
@@ -118,16 +154,14 @@ namespace GrillHouseNNProg.ViewModels
                         table.ColumnsDefinition(columns =>
                         {
                             columns.RelativeColumn();  // Название товара
-                            columns.ConstantColumn(80); // Начальное количество
                             columns.ConstantColumn(80); // Приход
                             columns.ConstantColumn(80); // Продажа
-                            columns.ConstantColumn(80); // Итоговое количество
+                            columns.ConstantColumn(80); // Остаток
                         });
 
                         table.Header(header =>
                         {
                             header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Товар").Bold();
-                            header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Начало").Bold();
                             header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Приход").Bold();
                             header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Продажа").Bold();
                             header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Остаток").Bold();
@@ -135,16 +169,20 @@ namespace GrillHouseNNProg.ViewModels
 
                         foreach (var product in Products)
                         {
-                            int initial = _initialStock.ContainsKey(product.Id) ? _initialStock[product.Id] : 0;
-                            int current = product.QuantityInStock ?? 0;
-                            int received = _receivedStock.ContainsKey(product.Id) ? _receivedStock[product.Id] : 0;
-                            int sold = SoldStockTracker.GetSoldQuantity(product.Id);
+                            int received = movements
+                                .Where(m => m.ProductId == product.Id && m.MovementType == "incoming")
+                                .Sum(m => m.Quantity);
+
+                            int sold = movements
+                                .Where(m => m.ProductId == product.Id && m.MovementType == "sale")
+                                .Sum(m => m.Quantity);
+
+                            int stock = product.QuantityInStock ?? 0;
 
                             table.Cell().Padding(5).Text(product.ProductName);
-                            table.Cell().Padding(5).Text(initial.ToString());
                             table.Cell().Padding(5).Text(received > 0 ? $"+{received}" : "-");
                             table.Cell().Padding(5).Text(sold > 0 ? $"-{sold}" : "-");
-                            table.Cell().Padding(5).Text(current.ToString());
+                            table.Cell().Padding(5).Text(stock.ToString());
                         }
                     });
 

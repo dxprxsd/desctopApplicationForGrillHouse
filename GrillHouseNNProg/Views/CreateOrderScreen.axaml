@@ -33,7 +33,7 @@
 			<TextBox HorizontalAlignment="Center"
 					 Width="200"
 					 VerticalAlignment="Center"
-					 Text="{Binding EnteredQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+					 Text="{Binding EnteredQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' }" />
 
 			<TextBlock Text="Цена товара:" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
 
@@ -63,6 +63,9 @@
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center"
 					Command="{Binding CreateOrderCommand}" />
+
+			<TextBlock Text="{Binding ErrorMessage}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
+
 		</StackPanel>
 	</Grid>
 

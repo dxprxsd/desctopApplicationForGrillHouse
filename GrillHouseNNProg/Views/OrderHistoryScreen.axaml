@@ -8,12 +8,18 @@
 			 x:DataType="vm:OrderHistoryScreenViewModel">
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="50" />
+			<RowDefinition Height="80" />
 			<RowDefinition Height="*" />
-			<RowDefinition Height="50" />
+			<RowDefinition Height="60" />
 		</Grid.RowDefinitions>
 
-		<TextBlock Classes="Header" Foreground="Black" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="История продаж"/>
+		<TextBlock Classes="Header" Margin="10" Foreground="Black" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Text="История продаж"/>
+
+		<StackPanel Grid.Row="0" Orientation="Vertical" Margin="5">
+			<DatePicker SelectedDate="{Binding StartOrderDate}" Margin="5"/>
+
+			<DatePicker SelectedDate="{Binding EndOrderDate}" Margin="5"/>
+		</StackPanel>
 
 		<!-- ListBox to display orders -->
 

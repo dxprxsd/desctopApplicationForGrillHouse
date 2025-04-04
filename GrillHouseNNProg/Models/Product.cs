@@ -21,6 +21,8 @@ public partial class Product
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
+    public virtual ICollection<ProductMovement> ProductMovements { get; set; } = new List<ProductMovement>();
+
     public virtual ProductType? ProductType { get; set; }
 
     public virtual Provider? Provider { get; set; }

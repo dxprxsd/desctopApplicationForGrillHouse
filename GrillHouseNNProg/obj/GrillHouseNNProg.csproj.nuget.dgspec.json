@@ -73,6 +73,10 @@
               "target": "Package",
               "version": "[11.1.0, )"
             },
+            "ClosedXML": {
+              "target": "Package",
+              "version": "[0.104.2, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -92,6 +96,10 @@
             "QuestPDF": {
               "target": "Package",
               "version": "[2023.4.2, )"
+            },
+            "System.Speech": {
+              "target": "Package",
+              "version": "[9.0.3, )"
             }
           },
           "imports": [
