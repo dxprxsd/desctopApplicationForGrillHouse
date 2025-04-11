@@ -19,10 +19,13 @@
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
-		<ComboBox Margin="5" Grid.Row="0" ItemsSource="{Binding ProductTypes}" Background="White" HorizontalAlignment="Left" Width="200" VerticalAlignment="Center" DisplayMemberBinding="{Binding TypeName}" SelectedItem="{Binding SelectedProductType}" />
+		<StackPanel Grid.Row="0" Orientation="Horizontal">
+			<ComboBox Margin="5" Grid.Row="0" ItemsSource="{Binding ProductTypess}" Background="White" HorizontalAlignment="Left" Width="200" VerticalAlignment="Center" DisplayMemberBinding="{Binding TypeName}" SelectedItem="{Binding SelectedProductType}" />
+			<Button Content="Сбросить фильтры" Classes="ButtonTemplate" Command="{Binding ResetFiltersCommand}" />
+		</StackPanel>
 
 		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-			<ItemsControl ItemsSource="{Binding Productss}">
+			<ItemsControl ItemsSource="{Binding Products}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<UniformGrid Columns="3" HorizontalAlignment="Center" />

@@ -8,30 +8,48 @@ using GrillHouseNNProg.Models;
 using GrillHouseNNProg.Resources;
 using ReactiveUI;
 using System.Globalization;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Net.Http.Json;
+using System.Reactive;
+using System.Diagnostics;
 
 namespace GrillHouseNNProg.ViewModels
 {
     public class CreateOrderScreenViewModel : ViewModelBase
     {
-        private readonly GrillcitynnContext _db;
+        private readonly ApiService _apiService;
         private Product _selectedProduct;
         private Discount _selectedDiscount;
         private int? _enteredQuantity;
         private double _productPrice;
-        private ObservableCollection<Product> _products;
-        private ObservableCollection<Discount> _discounts;
-        private Dictionary<int, int> _soldStock;
+        private ObservableCollection<Product> _products = new ObservableCollection<Product>();
+        private ObservableCollection<Discount> _discounts = new ObservableCollection<Discount>();
         private string _errorMessage;
 
-        public CreateOrderScreenViewModel(GrillcitynnContext db)
+        private bool _isLoading;
+
+        public bool IsLoading
         {
-            _db = db;
-            _soldStock = new Dictionary<int, int>();
+            get => _isLoading;
+            set => this.RaiseAndSetIfChanged(ref _isLoading, value);
+        }
 
-            LoadProducts();
-            LoadDiscounts();
+        public CreateOrderScreenViewModel(ApiService apiService)
+        {
 
-            CreateOrderCommand = ReactiveCommand.Create(CreateOrder);
+            _apiService = apiService ?? throw new ArgumentNullException(nameof(apiService));
+            _isLoading = false; // Инициализация
+
+
+            // Инициализация коллекций перед загрузкой
+            Products = new ObservableCollection<Product>();
+            Discounts = new ObservableCollection<Discount>();
+
+            // Асинхронная загрузка данных
+            _ = LoadDataAsync();
+
+            CreateOrderCommand = ReactiveCommand.CreateFromTask(CreateOrderAsync);
         }
 
         public string ErrorMessage
@@ -58,7 +76,8 @@ namespace GrillHouseNNProg.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _selectedProduct, value);
-                ProductPrice = _selectedProduct != null ? _selectedProduct.Price : 0;
+                ProductPrice = _selectedProduct?.Price ?? 0;
+                UpdateProductPrice();
             }
         }
 
@@ -68,28 +87,9 @@ namespace GrillHouseNNProg.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _enteredQuantity, value);
-                UpdateProductPrice(); // Добавляем вызов метода обновления цены
+                UpdateProductPrice();
             }
         }
-
-        private void UpdateProductPrice()
-        {
-            if (SelectedProduct != null && EnteredQuantity.HasValue && EnteredQuantity.Value > 0)
-            {
-                // Если есть скидка, применяем её
-                double basePrice = SelectedDiscount != null
-                    ? SelectedProduct.Price * (1 - (SelectedDiscount.DiscountPercent / 100.0))
-                    : SelectedProduct.Price;
-
-                ProductPrice = basePrice * EnteredQuantity.Value;
-            }
-            else
-            {
-                ProductPrice = 0;
-            }
-        }
-
-        
 
         public double ProductPrice
         {
@@ -103,65 +103,160 @@ namespace GrillHouseNNProg.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _selectedDiscount, value);
-                ApplyDiscount();
-            }
-        }
-
-        public ReactiveCommand<System.Reactive.Unit, System.Reactive.Unit> CreateOrderCommand { get; }
-
-        private void LoadProducts()
-        {
-            var productsFromDb = _db.Products.ToList();
-            Products = new ObservableCollection<Product>(productsFromDb);
-        }
-
-        private void LoadDiscounts()
-        {
-            var disountFromDb = _db.Discounts.ToList();
-            Discounts = new ObservableCollection<Discount>(disountFromDb);
-        }
-
-        private void ApplyDiscount()
-        {
-            if (SelectedDiscount != null && SelectedProduct != null)
-            {
-                ProductPrice = SelectedProduct.Price * (1 - (SelectedDiscount.DiscountPercent / 100.0));
-                // Также обновляем метод ApplyDiscount, чтобы он тоже вызывал UpdateProductPrice
                 UpdateProductPrice();
             }
         }
 
-        private void CreateOrder()
+        public ReactiveCommand<Unit, Unit> CreateOrderCommand { get; }
+
+        public async Task LoadDataAsync()
+        {
+            try
+            {
+                // Загрузка продуктов
+                var products = await _apiService.GetAllProductsAsync();
+                Products = new ObservableCollection<Product>(products);
+
+                // Загрузка скидок
+                var discounts = await _apiService.GetDiscountsAsync();
+                Discounts = new ObservableCollection<Discount>(discounts);
+
+                ErrorMessage = ""; // Очищаем сообщение об ошибке при успешной загрузке
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Ошибка загрузки данных: {ex.Message}";
+                // Для отладки можно добавить логирование
+                Debug.WriteLine($"Ошибка при загрузке данных: {ex}");
+            }
+        }
+
+        public void UpdateProductPrice()
         {
             if (SelectedProduct != null && EnteredQuantity.HasValue && EnteredQuantity.Value > 0)
             {
-                var newOrder = new Order
+                double basePrice = SelectedDiscount != null
+                    ? SelectedProduct.Price * (1 - (SelectedDiscount.DiscountPercent / 100.0))
+                    : SelectedProduct.Price;
+
+                ProductPrice = basePrice * EnteredQuantity.Value;
+            }
+            else
+            {
+                ProductPrice = 0;
+            }
+        }
+
+        private async Task CreateOrderAsync()
+        {
+            try
+            {
+                // Проверка данных
+                if (SelectedProduct == null)
                 {
-                    ProductId = SelectedProduct.Id,
-                    DiscountId = SelectedDiscount?.Id,
-                    DateOfOrder = DateOnly.FromDateTime(DateTime.Now),
-                    FinalPrice = ProductPrice * EnteredQuantity.Value
-                };
-
-                _db.Orders.Add(newOrder);
-
-                var product = _db.Products.FirstOrDefault(p => p.Id == SelectedProduct.Id);
-                if (product != null)
-                {
-                    product.QuantityInStock -= EnteredQuantity.Value;
-                    _db.Products.Update(product);
-                    _db.SaveChanges();
-
-                    SoldStockTracker.RecordSale(product.Id, EnteredQuantity.Value);
+                    ErrorMessage = "Не выбран продукт";
+                    return;
                 }
 
-                SaveOrderToExcel(newOrder);
-                ErrorMessage = "Продажа прошла успешно!";
+                if (!EnteredQuantity.HasValue || EnteredQuantity.Value <= 0)
+                {
+                    ErrorMessage = "Укажите корректное количество";
+                    return;
+                }
+
+                IsLoading = true;
+                ErrorMessage = string.Empty;
+
+                // Логирование перед отправкой
+                Debug.WriteLine($"Создание заказа: ProductId={SelectedProduct.Id}, " +
+                              $"DiscountId={SelectedDiscount?.Id}, Quantity={EnteredQuantity.Value}");
+
+                var result = await _apiService.CreateOrderAsync(
+                    SelectedProduct.Id,
+                    SelectedDiscount?.Id,
+                    EnteredQuantity.Value
+                );
+
+                ErrorMessage = "Заказ успешно создан!";
+                SaveOrderToExcel(result);
+            }
+            catch (HttpRequestException httpEx) when (httpEx.Message.Contains("400"))
+            {
+                ErrorMessage = "Ошибка в данных заказа. Проверьте введенные значения.";
+                Debug.WriteLine(httpEx);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Ошибка: {ex.Message}";
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+        public void SaveOrderToExcel(OrderResult orderResult)
+        {
+            string orderFileName = $"Order_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+            string orderFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, orderFileName);
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Заказ");
+
+                // Заполнение Excel-файла (остается без изменений)
+                worksheet.Cell("A1").Value = "ИП Узлов Ю. В. ИНН 526312046689";
+                worksheet.Range("A1:E1").Merge().Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                worksheet.Cell("A2").Value = "(наименование организации, ИНН)";
+                worksheet.Range("A2:F2").Merge().Style.Font.FontSize = 6;
+                worksheet.Cell("A3").Value = "Товарный чек № ________ от ________________ г.";
+                worksheet.Range("A3:F3").Merge().Style.Font.FontSize = 12;
+                worksheet.Range("A3:F3").Style.Font.Bold = true;
+
+                worksheet.Cell("A5").Value = "Наименование товара";
+                worksheet.Cell("B5").Value = "Единица измерения";
+                worksheet.Cell("C5").Value = "Количество";
+                worksheet.Cell("D5").Value = "Цена за штуку";
+                worksheet.Cell("E5").Value = "Сумма";
+
+                worksheet.Cell("A6").Value = orderResult.Product;
+                worksheet.Cell("B6").Value = "шт.";
+                worksheet.Cell("C6").Value = orderResult.Quantity;
+
+                worksheet.Cell("D6").Value = SelectedProduct.Price;
+                worksheet.Cell("D6").Style.NumberFormat.Format = "0.00";
+
+                worksheet.Cell("E6").Value = orderResult.FinalPrice;
+                worksheet.Cell("E6").Style.NumberFormat.Format = "0.00";
+
+                worksheet.Range("A5:E6").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                worksheet.Columns().AdjustToContents();
+
+                if (SelectedDiscount != null)
+                {
+                    worksheet.Cell("A7").Value = $"Скидка: {SelectedDiscount.DiscountPercent}%";
+                    worksheet.Range("A7:E7").Merge().Style.Font.FontSize = 11;
+                }
+
+                string totalAmountWords = ConvertToWords(orderResult.FinalPrice);
+
+                worksheet.Cell("A8").Value = "Всего отпущено на сумму:";
+                worksheet.Cell("A9").Value = totalAmountWords;
+                worksheet.Range("A8").Merge().Style.Font.FontSize = 11;
+
+                worksheet.Cell("A11").Value = "Продавец";
+                worksheet.Cell("B11").Value = "_________";
+                worksheet.Cell("C11").Value = "_________";
+                worksheet.Cell("B12").Value = "подпись";
+                worksheet.Cell("C12").Value = "ФИО";
+
+                workbook.SaveAs(orderFilePath);
             }
         }
 
 
-        private string ConvertToWords(double number)
+        public string ConvertToWords(double number)
         {
             // Массивы для единиц, десятков и сотен
             string[] ones = new string[] { "", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять", "десять",
@@ -260,64 +355,8 @@ namespace GrillHouseNNProg.ViewModels
             return words;
         }
 
-        private void SaveOrderToExcel(Order order)
-        {
-            string orderFileName = $"Order_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
-            string orderFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, orderFileName);
-
-            using (var workbook = new XLWorkbook())
-            {
-                var worksheet = workbook.Worksheets.Add("Заказ");
-
-                worksheet.Cell("A1").Value = "ИП Узлов Ю. В. 526312046689";
-                worksheet.Range("A1:F1").Merge().Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-                worksheet.Cell("A2").Value = "(наименование организации, ИНН)";
-                worksheet.Range("A2:F2").Merge().Style.Font.FontSize = 6;
-                worksheet.Cell("A3").Value = "Товарный чек № ________ от ________________ г.";
-                worksheet.Range("A3:F3").Merge().Style.Font.FontSize = 12;
-                worksheet.Range("A3:F3").Style.Font.Bold = true;
-
-                worksheet.Cell("A5").Value = "Наименование товара";
-                worksheet.Cell("C5").Value = "Единица измерения";
-                worksheet.Cell("D5").Value = "Количество";
-                worksheet.Cell("E5").Value = "Цена за штуку";
-                worksheet.Cell("F5").Value = "Сумма";
-
-                worksheet.Cell("A6").Value = SelectedProduct.ProductName;
-                worksheet.Cell("C6").Value = "шт.";
-                worksheet.Cell("D6").Value = EnteredQuantity;
-
-                // Форматируем цену с двумя десятичными знаками
-                worksheet.Cell("E6").Value = SelectedProduct.Price;
-                worksheet.Cell("E6").Style.NumberFormat.Format = "0.00";
-
-                // Форматируем сумму с двумя десятичными знаками
-                double sum = ProductPrice * (EnteredQuantity ?? 0);
-                worksheet.Cell("F6").Value = sum;
-                worksheet.Cell("F6").Style.NumberFormat.Format = "0.00";
-
-                worksheet.Range("A5:F6").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
-                worksheet.Columns().AdjustToContents();
-
-                double totalAmount = sum;
-                string totalAmountWords = ConvertToWords(totalAmount);
-
-                worksheet.Cell("A8").Value = "Всего отпущено на сумму:";
-                worksheet.Cell("A9").Value = totalAmountWords;
-                worksheet.Range("A8").Merge().Style.Font.FontSize = 9;
-
-                worksheet.Cell("A11").Value = "Продавец";
-                worksheet.Cell("B11").Value = "_________";
-                worksheet.Cell("C11").Value = "_________";
-                worksheet.Cell("B12").Value = "подпись";
-                worksheet.Cell("C12").Value = "ФИО";
-
-                workbook.SaveAs(orderFilePath);
-            }
-        }
-
         // Метод для обработки тысяч
-        private string HandleThousands(int part, string[] largeNumbers)
+        public string HandleThousands(int part, string[] largeNumbers)
         {
             int index = part % 10;
             int tensPart = (part / 10) % 10;

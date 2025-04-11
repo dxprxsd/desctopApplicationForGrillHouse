@@ -1,22 +1,22 @@
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
+using System.Diagnostics;
 using System.Reactive;
-using GrillHouseNNProg.Models;
-using Microsoft.EntityFrameworkCore;
 using ReactiveUI;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using System.Reflection.Metadata;
-
+using GrillHouseNNProg.Models;
+using GrillHouseNNProg.Resources;
+using System.Threading.Tasks;
+using Unit = System.Reactive.Unit;
+using System.Linq;
 
 namespace GrillHouseNNProg.ViewModels
 {
     public class OrderHistoryScreenViewModel : ViewModelBase
     {
-        private readonly GrillcitynnContext _db;
+        private readonly ApiService _apiService;
         private Order _ordert;
         private ObservableCollection<Order> _orders;
         private DateTime _startOrderDate = DateTime.Today.AddDays(-30);
@@ -44,9 +44,7 @@ namespace GrillHouseNNProg.ViewModels
             }
         }
 
-
-        public ReactiveCommand<System.Reactive.Unit, System.Reactive.Unit> ExportToPdfCommand { get; }
-
+        public ReactiveCommand<Unit, Unit> ExportToPdfCommand { get; }
 
         public Order Ordert
         {
@@ -60,281 +58,123 @@ namespace GrillHouseNNProg.ViewModels
             set => this.RaiseAndSetIfChanged(ref _orders, value);
         }
 
-        //private void LoadOrders()
-        //{
-        //    var ordersFromDb = _db.Orders
-        //        .Include(x => x.Product)
-        //        .ThenInclude(p => p.Provider)
-        //        .Include(x => x.Discount)
-        //        .ToList();
-
-        //    Orders = new ObservableCollection<Order>(ordersFromDb);
-        //}
-
-        private void LoadOrders()
+        public async void LoadOrders()
         {
-            // Конвертируем DateTime в DateOnly для сравнения с полем DateOfOrder
-            var startDate = DateOnly.FromDateTime(_startOrderDate);
-            var endDate = DateOnly.FromDateTime(_endOrderDate.AddDays(1)); // Добавляем день, чтобы включить всю конечную дату
+            try
+            {
+                var allOrders = await _apiService.GetAllOrdersAsync();
 
-            var ordersFromDb = _db.Orders
-                .Include(x => x.Product)
-                .ThenInclude(p => p.Provider)
-                .Include(x => x.Discount)
-                .Where(order => order.DateOfOrder != null &&
-                       order.DateOfOrder >= startDate &&
-                       order.DateOfOrder <= endDate)
-                .ToList();
+                var start = DateOnly.FromDateTime(_startOrderDate);
+                var end = DateOnly.FromDateTime(_endOrderDate);
 
-            Orders = new ObservableCollection<Order>(ordersFromDb);
+                var filtered = allOrders
+                    .Where(o => o.DateOfOrder.HasValue &&
+                                o.DateOfOrder.Value >= start &&
+                                o.DateOfOrder.Value <= end)
+                    .ToList();
+
+                Orders = new ObservableCollection<Order>(filtered);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading orders: {ex.Message}");
+            }
         }
 
-        public OrderHistoryScreenViewModel(GrillcitynnContext db)
-        {
-            _db = db;
 
-            // Устанавливаем начальный период - последние 30 дней
+
+        public OrderHistoryScreenViewModel(ApiService apiService)
+        {
+            _apiService = apiService;
+
             _startOrderDate = DateTime.Today.AddDays(-30);
             _endOrderDate = DateTime.Today;
 
             LoadOrders();
             QuestPDF.Settings.License = LicenseType.Community;
-            ExportToPdfCommand = ReactiveCommand.Create(ExportToPdf);
+            ExportToPdfCommand = ReactiveCommand.CreateFromTask(ExportToPdfAsync);
         }
 
-        //private void ExportToPdf()
-        //{
-        //    string filePath = "Отчет_продаж.pdf";
-
-        //    Группировка заказов по поставщикам и подсчет общей выручки
-        //    var providerRevenue = Orders
-        //        .Where(order => order.Product?.Provider != null)
-        //        .GroupBy(order => order.Product.Provider.ProviderName)
-        //        .Select(group => new
-        //        {
-        //            ProviderName = group.Key ?? "Неизвестный поставщик",
-        //            TotalRevenue = group.Sum(order => order.FinalPrice)
-        //        })
-        //        .OrderByDescending(x => x.TotalRevenue) // Сортируем по убыванию выручки
-        //        .ToList();
-
-        //    QuestPDF.Fluent.Document.Create(container =>
-        //    {
-        //        container.Page(page =>
-        //        {
-        //            page.Size(PageSizes.A4);
-        //            page.Margin(20);
-        //            page.DefaultTextStyle(x => x.FontFamily("Arial"));
-
-        //            Заголовок отчета
-        //            page.Header().AlignCenter().Text("Отчет по продажам")
-        //                .FontSize(20).SemiBold();
-
-        //            Основная таблица заказов
-        //            page.Content().Table(table =>
-        //            {
-        //                table.ColumnsDefinition(columns =>
-        //                {
-        //                    columns.ConstantColumn(100);
-        //                    columns.RelativeColumn();
-        //                    columns.ConstantColumn(100);
-        //                    columns.ConstantColumn(120);
-        //                    columns.ConstantColumn(100);
-        //                });
-
-        //                table.Header(header =>
-        //                {
-        //                    header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Дата").Bold();
-        //                    header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Товар").Bold();
-        //                    header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Скидка").Bold();
-        //                    header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Поставщик").Bold();
-        //                    header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Цена").Bold();
-        //                });
-
-        //                foreach (var order in Orders)
-        //                {
-        //                    table.Cell().Padding(5).Text(order.DateOfOrder?.ToString("dd.MM.yyyy") ?? "—");
-        //                    table.Cell().Padding(5).Text(order.Product?.ProductName ?? "Неизвестно");
-        //                    table.Cell().Padding(5).Text(order.Discount?.DiscountPercent != null ? $"{order.Discount.DiscountPercent}%" : "0%");
-        //                    table.Cell().Padding(5).Text(order.Product?.Provider?.ProviderName ?? "Неизвестно");
-        //                    table.Cell().Padding(5).Text($"{order.FinalPrice} руб.");
-        //                }
-        //            });
-
-        //            page.Footer().AlignCenter().Text($"Дата создания: {DateTime.Now:dd.MM.yyyy HH:mm}");
-        //        });
-
-        //        Страница статистики по поставщикам
-        //        container.Page(page =>
-        //        {
-        //            page.Size(PageSizes.A4);
-        //            page.Margin(20);
-        //            page.DefaultTextStyle(x => x.FontFamily("Arial"));
-
-        //            page.Header().AlignCenter().Text("Статистика по поставщикам")
-        //                .FontSize(18).SemiBold();
-
-        //            page.Content().Table(table =>
-        //            {
-        //                table.ColumnsDefinition(columns =>
-        //                {
-        //                    columns.RelativeColumn();
-        //                    columns.ConstantColumn(120);
-        //                });
-
-        //                table.Header(header =>
-        //                {
-        //                    header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Поставщик").Bold();
-        //                    header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Общая выручка").Bold();
-        //                });
-
-        //                foreach (var provider in providerRevenue)
-        //                {
-        //                    table.Cell().Padding(5).Text(provider.ProviderName);
-        //                    table.Cell().Padding(5).Text($"{provider.TotalRevenue} руб.");
-        //                }
-        //            });
-
-        //            page.Footer().AlignCenter().Text($"Дата генерации: {DateTime.Now:dd.MM.yyyy HH:mm}");
-        //        });
-        //    }).GeneratePdf(filePath);
-
-        //    Открыть файл после генерации(опционально)
-        //    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-        //    {
-        //        FileName = filePath,
-        //        UseShellExecute = true
-        //    });
-        //}
-
-        private void ExportToPdf()
+        public async Task ExportToPdfAsync()
         {
-            // Добавляем даты периода в название файла
-            string filePath = $"Отчет_продаж_{_startOrderDate:ddMMyyyy}_{_endOrderDate:ddMMyyyy}.pdf";
-
-            // Фильтруем заказы по выбранному периоду (как в LoadOrders)
-            var filteredOrders = _db.Orders
-                .Include(x => x.Product)
-                .ThenInclude(p => p.Provider)
-                .Include(x => x.Discount)
-                .Where(order => order.DateOfOrder != null &&
-                       order.DateOfOrder >= DateOnly.FromDateTime(_startOrderDate) &&
-                       order.DateOfOrder <= DateOnly.FromDateTime(_endOrderDate.AddDays(1)))
-                .ToList();
-
-            // Группировка отфильтрованных заказов по поставщикам
-            var providerRevenue = filteredOrders
-                .Where(order => order.Product?.Provider != null)
-                .GroupBy(order => order.Product.Provider.ProviderName)
-                .Select(group => new
-                {
-                    ProviderName = group.Key ?? "Неизвестный поставщик",
-                    TotalRevenue = group.Sum(order => order.FinalPrice)
-                })
-                .OrderByDescending(x => x.TotalRevenue)
-                .ToList();
-
-            QuestPDF.Fluent.Document.Create(container =>
+            try
             {
-                container.Page(page =>
+                string filePath = $"Отчет_продаж_{_startOrderDate:ddMMyyyy}_{_endOrderDate:ddMMyyyy}.pdf";
+                var allOrders = await _apiService.GetAllOrdersAsync();
+
+                var start = DateOnly.FromDateTime(_startOrderDate);
+                var end = DateOnly.FromDateTime(_endOrderDate);
+
+                var filteredOrders = allOrders
+                    .Where(o => o.DateOfOrder.HasValue &&
+                                o.DateOfOrder.Value >= start &&
+                                o.DateOfOrder.Value <= end)
+                    .ToList();
+
+                QuestPDF.Fluent.Document.Create(container =>
                 {
-                    page.Size(PageSizes.A4);
-                    page.Margin(20);
-                    page.DefaultTextStyle(x => x.FontFamily("Arial"));
-
-                    // Заголовок с указанием периода
-                    page.Header().Column(column =>
+                    container.Page(page =>
                     {
-                        column.Item().AlignCenter().Text("Отчет по продажам").FontSize(20).SemiBold();
-                        column.Item().AlignCenter().Text($"за период с {_startOrderDate:dd.MM.yyyy} по {_endOrderDate:dd.MM.yyyy}").FontSize(14);
-                    });
+                        page.Size(PageSizes.A4);
+                        page.Margin(20);
+                        page.DefaultTextStyle(x => x.FontFamily("Arial"));
 
-                    // Основная таблица заказов
-                    page.Content().Table(table =>
-                    {
-                        table.ColumnsDefinition(columns =>
+                        page.Header().Column(column =>
                         {
-                            columns.ConstantColumn(100);
-                            columns.RelativeColumn();
-                            columns.ConstantColumn(100);
-                            columns.ConstantColumn(120);
-                            columns.ConstantColumn(100);
+                            column.Item().AlignCenter().Text("Отчет по продажам").FontSize(20).SemiBold();
+                            column.Item().AlignCenter().Text($"за период с {_startOrderDate:dd.MM.yyyy} по {_endOrderDate:dd.MM.yyyy}").FontSize(14);
                         });
 
-                        table.Header(header =>
+                        page.Content().Table(table =>
                         {
-                            header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Дата").Bold();
-                            header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Товар").Bold();
-                            header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Скидка").Bold();
-                            header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Поставщик").Bold();
-                            header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Цена").Bold();
+                            table.ColumnsDefinition(columns =>
+                            {
+                                columns.ConstantColumn(100);
+                                columns.RelativeColumn();
+                                columns.ConstantColumn(100);
+                                columns.ConstantColumn(120);
+                                columns.ConstantColumn(100);
+                            });
+
+                            table.Header(header =>
+                            {
+                                header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Дата").Bold();
+                                header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Товар").Bold();
+                                header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Скидка").Bold();
+                                header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Поставщик").Bold();
+                                header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Цена").Bold();
+                            });
+
+                            foreach (var order in filteredOrders)
+                            {
+                                table.Cell().Padding(5).Text(order.DateOfOrder?.ToString("dd.MM.yyyy") ?? "—");
+                                table.Cell().Padding(5).Text(order.Product?.ProductName ?? "Неизвестно");
+                                table.Cell().Padding(5).Text(order.Discount?.DiscountPercent != null ? $"{order.Discount.DiscountPercent}%" : "0%");
+                                table.Cell().Padding(5).Text(order.Product?.Provider?.ProviderName ?? "Неизвестно");
+                                table.Cell().Padding(5).Text($"{order.FinalPrice} руб.");
+                            }
                         });
 
-                        foreach (var order in filteredOrders)
+                        page.Footer().AlignCenter().Text(x =>
                         {
-                            table.Cell().Padding(5).Text(order.DateOfOrder?.ToString("dd.MM.yyyy") ?? "—");
-                            table.Cell().Padding(5).Text(order.Product?.ProductName ?? "Неизвестно");
-                            table.Cell().Padding(5).Text(order.Discount?.DiscountPercent != null ? $"{order.Discount.DiscountPercent}%" : "0%");
-                            table.Cell().Padding(5).Text(order.Product?.Provider?.ProviderName ?? "Неизвестно");
-                            table.Cell().Padding(5).Text($"{order.FinalPrice} руб.");
-                        }
+                            x.Span("Дата создания: ");
+                            x.Span($"{DateTime.Now:dd.MM.yyyy HH:mm}");
+                        });
                     });
+                }).GeneratePdf(filePath);
 
-                    page.Footer().AlignCenter().Text(x =>
-                    {
-                        x.Span("Дата создания: ");
-                        x.Span($"{DateTime.Now:dd.MM.yyyy HH:mm}");
-                    });
-                });
-
-                // Страница статистики по поставщикам
-                container.Page(page =>
+                Process.Start(new ProcessStartInfo
                 {
-                    page.Size(PageSizes.A4);
-                    page.Margin(20);
-                    page.DefaultTextStyle(x => x.FontFamily("Arial"));
-
-                    page.Header().Column(column =>
-                    {
-                        column.Item().AlignCenter().Text("Статистика по поставщикам").FontSize(18).SemiBold();
-                        column.Item().AlignCenter().Text($"за период с {_startOrderDate:dd.MM.yyyy} по {_endOrderDate:dd.MM.yyyy}").FontSize(12);
-                    });
-
-                    page.Content().Table(table =>
-                    {
-                        table.ColumnsDefinition(columns =>
-                        {
-                            columns.RelativeColumn();
-                            columns.ConstantColumn(120);
-                        });
-
-                        table.Header(header =>
-                        {
-                            header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Поставщик").Bold();
-                            header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Общая выручка").Bold();
-                        });
-
-                        foreach (var provider in providerRevenue)
-                        {
-                            table.Cell().Padding(5).Text(provider.ProviderName);
-                            table.Cell().Padding(5).Text($"{provider.TotalRevenue} руб.");
-                        }
-
-                        // Итоговая строка
-                        table.Cell().ColumnSpan(2).Padding(5).AlignRight().Text($"Итого: {providerRevenue.Sum(x => x.TotalRevenue)} руб.").Bold();
-                    });
-
-                    page.Footer().AlignCenter().Text($"Дата генерации: {DateTime.Now:dd.MM.yyyy HH:mm}");
+                    FileName = filePath,
+                    UseShellExecute = true
                 });
-            }).GeneratePdf(filePath);
-
-            // Открыть файл после генерации
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            }
+            catch (Exception ex)
             {
-                FileName = filePath,
-                UseShellExecute = true
-            });
+                Console.WriteLine($"Error generating PDF: {ex.Message}");
+            }
         }
+
 
     }
 }

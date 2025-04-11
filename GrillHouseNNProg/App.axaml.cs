@@ -21,7 +21,7 @@ namespace GrillHouseNNProg
                 var dbContext = new GrillcitynnContext(); // Создаем экземпляр БД
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(dbContext),
+                    DataContext = new MainWindowViewModel(),
                 };
             }
 

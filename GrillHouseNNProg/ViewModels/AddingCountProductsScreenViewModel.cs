@@ -9,11 +9,17 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using ReactiveUI;
 using GrillHouseNNProg.Resources;
+using System.Threading.Tasks;
+using System.Reactive;
+using System.Diagnostics;
+using System.Net.Http;
+using System.IO;
 
 namespace GrillHouseNNProg.ViewModels
 {
     public class AddingCountProductsScreenViewModel : ViewModelBase
     {
+        private readonly ApiService _apiService; // Заменяем прямой доступ к БД на ApiService
         private readonly GrillcitynnContext _db;
         private Product _selectedProduct;
         private ObservableCollection<Product> _products;
@@ -23,6 +29,7 @@ namespace GrillHouseNNProg.ViewModels
         private string _errorMessage;
         private DateTime _startDate = DateTime.Today.AddDays(-7);
         private DateTime _endDate = DateTime.Now;
+        private ObservableCollection<ProductMovement> _productMovements; // Добавляем коллекцию для хранения движений товаров
 
         public DateTimeOffset StartDate
         {
@@ -36,8 +43,17 @@ namespace GrillHouseNNProg.ViewModels
             set => this.RaiseAndSetIfChanged(ref _endDate, DateTime.SpecifyKind(new DateTime(value.Year, value.Month, value.Day), DateTimeKind.Local));
         }
 
+        // Новая коллекция для хранения движений товаров
+        public ObservableCollection<ProductMovement> ProductMovements
+        {
+            get => _productMovements;
+            set => this.RaiseAndSetIfChanged(ref _productMovements, value);
+        }
 
         public ReactiveCommand<System.Reactive.Unit, System.Reactive.Unit> UpdateProductStockCommand { get; }
+        public ReactiveCommand<System.Reactive.Unit, System.Reactive.Unit> LoadMovementsCommand { get; }
+
+        //public ReactiveCommand<System.Reactive.Unit, System.Reactive.Unit> UpdateProductStockCommand { get; }
 
         public string ErrorMessage
         {
@@ -63,138 +79,211 @@ namespace GrillHouseNNProg.ViewModels
             set => this.RaiseAndSetIfChanged(ref _enteredQuantity, value);
         }
 
-        public AddingCountProductsScreenViewModel(GrillcitynnContext db)
+        public AddingCountProductsScreenViewModel(ApiService apiService)
         {
-            _db = db;
+            _apiService = apiService ?? throw new ArgumentNullException(nameof(apiService));
+            //_db = db;
 
-            if (_initialStock == null) // Загружаем данные при первом запуске
+            QuestPDF.Settings.License = LicenseType.Community;
+            _ = LoadProductsAsync(); // Асинхронная загрузка продуктов
+            //UpdateProductStockCommand = ReactiveCommand.Create(UpdateProductStock);
+            UpdateProductStockCommand = ReactiveCommand.CreateFromTask(UpdateProductStockAsync);
+            LoadMovementsCommand = ReactiveCommand.CreateFromTask(LoadMovementsAsync);
+        }
+
+        public async Task LoadInitialStockAsync()
+        {
+            try
             {
-                LoadInitialStock();
-            }
+                var products = await _apiService.GetAllProductsAsync();
+                _initialStock = products.ToDictionary(p => p.Id, p => p.QuantityInStock ?? 0);
 
-            LoadProducts();
-            UpdateProductStockCommand = ReactiveCommand.Create(UpdateProductStock);
-        }
-
-        private void LoadInitialStock()
-        {
-            _initialStock = _db.Products.ToDictionary(p => p.Id, p => p.QuantityInStock ?? 0);
-
-            // Загружаем добавленные товары из базы (если они были сохранены)
-            foreach (var product in _db.Products)
-            {
-                if (!_receivedStock.ContainsKey(product.Id))
+                foreach (var product in products)
                 {
-                    _receivedStock[product.Id] = 0;
-                }
-            }
-        }
-
-        private void LoadProducts()
-        {
-            Products = new ObservableCollection<Product>(_db.Products.ToList());
-        }
-
-        /// <summary>
-        /// Обновляет количество товара с учетом поступлений и сохраняет в БД.
-        /// </summary>
-        private void UpdateProductStock()
-        {
-            if (SelectedProduct != null && EnteredQuantity > 0)
-            {
-                if (!_receivedStock.ContainsKey(SelectedProduct.Id))
-                {
-                    _receivedStock[SelectedProduct.Id] = 0;
-                }
-
-                _receivedStock[SelectedProduct.Id] += EnteredQuantity;
-
-                var product = _db.Products.FirstOrDefault(p => p.Id == SelectedProduct.Id);
-                if (product != null)
-                {
-                    product.QuantityInStock = (product.QuantityInStock ?? 0) + EnteredQuantity;
-                    QuestPDF.Settings.License = LicenseType.Community;
-                    _db.Products.Update(product);
-                    _db.SaveChanges(); // Сохраняем изменения сразу
-                }
-                ErrorMessage = "Готово!";
-            }
-        }
-
-        private List<ProductMovement> GetProductMovementsInRange()
-        {
-            DateOnly startDateOnly = DateOnly.FromDateTime(_startDate);
-            DateOnly endDateOnly = DateOnly.FromDateTime(_endDate);
-
-            return _db.ProductMovements
-                .Where(pm => pm.MovementDate.HasValue &&
-                             pm.MovementDate.Value >= startDateOnly &&
-                             pm.MovementDate.Value <= endDateOnly)
-                .ToList();
-        }
-
-        public void ExportToPdf()
-        {
-            string filePath = "Отчет_по_движению_товаров.pdf";
-            var movements = GetProductMovementsInRange();
-
-            QuestPDF.Fluent.Document.Create(container =>
-            {
-                container.Page(page =>
-                {
-                    page.Size(PageSizes.A4);
-                    page.Margin(20);
-                    page.DefaultTextStyle(x => x.FontFamily("Arial"));
-
-                    page.Header().AlignCenter().Text("Отчет о движении товаров")
-                        .FontSize(20).SemiBold();
-
-                    page.Content().Table(table =>
+                    if (!_receivedStock.ContainsKey(product.Id))
                     {
-                        table.ColumnsDefinition(columns =>
-                        {
-                            columns.RelativeColumn();  // Название товара
-                            columns.ConstantColumn(80); // Приход
-                            columns.ConstantColumn(80); // Продажа
-                            columns.ConstantColumn(80); // Остаток
-                        });
-
-                        table.Header(header =>
-                        {
-                            header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Товар").Bold();
-                            header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Приход").Bold();
-                            header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Продажа").Bold();
-                            header.Cell().BorderBottom(1).BorderColor("#000").Padding(5).Text("Остаток").Bold();
-                        });
-
-                        foreach (var product in Products)
-                        {
-                            int received = movements
-                                .Where(m => m.ProductId == product.Id && m.MovementType == "incoming")
-                                .Sum(m => m.Quantity);
-
-                            int sold = movements
-                                .Where(m => m.ProductId == product.Id && m.MovementType == "sale")
-                                .Sum(m => m.Quantity);
-
-                            int stock = product.QuantityInStock ?? 0;
-
-                            table.Cell().Padding(5).Text(product.ProductName);
-                            table.Cell().Padding(5).Text(received > 0 ? $"+{received}" : "-");
-                            table.Cell().Padding(5).Text(sold > 0 ? $"-{sold}" : "-");
-                            table.Cell().Padding(5).Text(stock.ToString());
-                        }
-                    });
-
-                    page.Footer().AlignCenter().Text($"Дата генерации: {DateTime.Now:dd.MM.yyyy HH:mm}");
-                });
-            }).GeneratePdf(filePath);
-
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        _receivedStock[product.Id] = 0;
+                    }
+                }
+            }
+            catch (Exception ex)
             {
-                FileName = filePath,
-                UseShellExecute = true
-            });
+                ErrorMessage = $"Ошибка загрузки начальных данных: {ex.Message}";
+            }
         }
+
+        public async Task LoadProductsAsync()
+        {
+            try
+            {
+                var products = await _apiService.GetAllProductsAsync();
+                Products = new ObservableCollection<Product>(products);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Ошибка загрузки продуктов: {ex.Message}";
+                Debug.WriteLine(ex);
+                throw; // Пробрасываем исключение дальше для обработки в InitializeDataAsync
+            }
+        }
+
+        public async Task UpdateProductStockAsync()
+        {
+            if (SelectedProduct == null || EnteredQuantity <= 0)
+            {
+                ErrorMessage = "Выберите товар и укажите положительное количество";
+                return;
+            }
+
+            try
+            {
+                // Логируем перед отправкой
+                Debug.WriteLine($"Отправка запроса: ProductId={SelectedProduct.Id}, Quantity={EnteredQuantity}");
+
+                // Обновляем на сервере
+                var result = await _apiService.UpdateProductStockAsync(
+                    SelectedProduct.Id,
+                    EnteredQuantity);
+
+                // Обновляем локальные данные
+                _receivedStock[SelectedProduct.Id] = _receivedStock.GetValueOrDefault(SelectedProduct.Id, 0) + EnteredQuantity;
+
+                // Обновляем список продуктов
+                await LoadProductsAsync();
+
+                ErrorMessage = "Количество товара успешно обновлено!";
+            }
+            catch (HttpRequestException httpEx)
+            {
+                ErrorMessage = $"Ошибка сети: {httpEx.Message}";
+                Debug.WriteLine(httpEx);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Ошибка: {ex.Message}";
+                Debug.WriteLine(ex);
+            }
+        }
+
+
+        private async Task LoadMovementsAsync()
+        {
+            try
+            {
+                var allMovements = await _apiService.GetProductMovementsAsync(DateTime.MinValue, DateTime.MaxValue);
+
+                // Фильтрация на клиенте
+                var filtered = allMovements?
+                    .Where(m => m.MovementDate >= _startDate && m.MovementDate <= _endDate)
+                    .ToList();
+
+                // Обработка данных...
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Ошибка загрузки: {ex.Message}";
+                Debug.WriteLine(ex);
+            }
+        }
+
+        public async Task ExportToPdf()
+        {
+            try
+            {
+                // Получаем все движения товаров
+                var allMovements = await _apiService.GetProductMovementsAsync(DateTime.MinValue, DateTime.MaxValue);
+
+                // Фильтруем по дате на стороне клиента
+                var filteredMovements = allMovements?
+                    .Where(m => m.MovementDate >= _startDate && m.MovementDate <= _endDate)
+                    .ToList();
+
+                if (filteredMovements == null || !filteredMovements.Any())
+                {
+                    ErrorMessage = "Нет данных о движении товаров за выбранный период";
+                    return;
+                }
+
+                string filePath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    $"Отчет_по_движению_товаров_{DateTime.Now:yyyyMMdd_HHmmss}.pdf");
+
+                Document.Create(container =>
+                {
+                    container.Page(page =>
+                    {
+                        page.Size(PageSizes.A4);
+                        page.Margin(2, QuestPDF.Infrastructure.Unit.Centimetre);
+                        page.DefaultTextStyle(x => x.FontFamily("Arial"));
+
+
+                        page.Header().Column(column =>
+                        {
+                            column.Item().AlignCenter().Text("Отчет о движении товаров").FontSize(20).SemiBold();
+                            column.Item().AlignCenter().Text($"за период с {_startDate:dd.MM.yyyy} по {_endDate:dd.MM.yyyy}").FontSize(14);
+                        });
+                       
+
+                        // Таблица с данными
+                        page.Content()
+                            .Table(table =>
+                            {
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.RelativeColumn(3);  // Название товара
+                                    columns.RelativeColumn(1);  // Приход
+                                    columns.RelativeColumn(1);  // Продажа
+                                    columns.RelativeColumn(1);  // Остаток
+                                });
+
+                                // Заголовки
+                                table.Header(header =>
+                                {
+                                    header.Cell().Background("#EEE").Text("Товар").Bold();
+                                    header.Cell().Background("#EEE").Text("Приход").Bold();
+                                    header.Cell().Background("#EEE").Text("Продажа").Bold();
+                                    header.Cell().Background("#EEE").Text("Остаток").Bold();
+                                });
+
+                                // Данные
+                                foreach (var product in Products)
+                                {
+                                    var productMovements = filteredMovements
+                                        .Where(m => m.ProductId == product.Id)
+                                        .ToList();
+
+                                    int received = productMovements
+                                        .Where(m => m.MovementType == "incoming")
+                                        .Sum(m => m.Quantity);
+
+                                    int sold = productMovements
+                                        .Where(m => m.MovementType == "sale")
+                                        .Sum(m => m.Quantity);
+
+                                    table.Cell().BorderBottom(1).Padding(5).Text(product.ProductName);
+                                    table.Cell().BorderBottom(1).Padding(5).AlignRight().Text(received.ToString("+0;-#"));
+                                    table.Cell().BorderBottom(1).Padding(5).AlignRight().Text(sold.ToString("-0;-#"));
+                                    table.Cell().BorderBottom(1).Padding(5).AlignRight().Text((product.QuantityInStock ?? 0).ToString());
+                                }
+                            });
+
+                        page.Footer()
+                            .AlignCenter()
+                            .Text(x => x.CurrentPageNumber());
+                    });
+                })
+                .GeneratePdf(filePath);
+
+                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                ErrorMessage = "Отчет успешно сформирован!";
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Ошибка: {ex.Message}";
+                Debug.WriteLine(ex);
+            }
+        }
+
+
     }
 }

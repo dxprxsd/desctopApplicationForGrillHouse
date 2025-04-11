@@ -59,12 +59,12 @@
 			<!-- Кнопка оформления заказа -->
 			<Button Margin="5"
 					Classes="ButtonTemplate"
-					Content="Оформить заказ"
+					Content="Оформить покупку"
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center"
 					Command="{Binding CreateOrderCommand}" />
 
-			<TextBlock Text="{Binding ErrorMessage}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
+			<TextBlock Text="{Binding ErrorMessage}" Width="800" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
 
 		</StackPanel>
 	</Grid>
