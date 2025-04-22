@@ -30,10 +30,39 @@ namespace GrillHouseNNProg.ViewModels
         private List<ProductType> _productTypes;
         private List<ProductType> _productTypess;
 
+        private Provider _selectedSupplier;
+        private List<Provider> _suppliers;
+        private List<Provider> _allSuppliers;
 
         private bool _isProductListEmpty;
         private bool _typesLoaded; // Флаг для отслеживания загрузки типов продуктов
         private List<Product> _allProducts; // Полный список всех товаров
+
+        private bool _sortByPriceAscending = true; //для фильтрации по возрастанию/убыванию цены
+        private string _searchQuery; // для поиска по названию товара
+        public string SortButtonText => SortByPriceAscending ? "Сортировка: ↑ Цена" : "Сортировка: ↓ Цена";
+
+        public bool SortByPriceAscending
+        {
+            get => _sortByPriceAscending;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _sortByPriceAscending, value);
+                this.RaisePropertyChanged(nameof(SortButtonText));
+                FilterProducts();
+            }
+
+        }
+
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _searchQuery, value);
+                FilterProducts(); // Фильтруем при изменении поискового запроса
+            }
+        }
 
         public bool IsProductListEmpty
         {
@@ -74,6 +103,27 @@ namespace GrillHouseNNProg.ViewModels
                 FilterProducts(); // Вызываем фильтрацию при изменении выбранного типа
             }
         }
+        public List<Provider> AllSuppliers
+        {
+            get => _allSuppliers;
+            set => this.RaiseAndSetIfChanged(ref _allSuppliers, value);
+        }
+
+        public Provider SelectedSupplier
+        {
+            get => _selectedSupplier;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _selectedSupplier, value);
+                FilterProducts();
+            }
+        }
+
+        public List<Provider> Suppliers
+        {
+            get => _suppliers;
+            set => this.RaiseAndSetIfChanged(ref _suppliers, value);
+        }
 
         public ObservableCollection<Product> Products
         {
@@ -82,6 +132,7 @@ namespace GrillHouseNNProg.ViewModels
         }
 
         public ReactiveCommand<Unit, Unit> ResetFiltersCommand { get; }
+        public ReactiveCommand<Unit, Unit> ToggleSortByPriceCommand { get; }
 
         public MainWindowViewModel()
         {
@@ -90,45 +141,45 @@ namespace GrillHouseNNProg.ViewModels
             LoadDataAsync(); // Изменил имя метода на LoadDataAsync для консистентности
             _ = LoadTypes();
             ResetFiltersCommand = ReactiveCommand.Create(ResetFilters);
+            ToggleSortByPriceCommand = ReactiveCommand.Create(() =>
+            {
+                SortByPriceAscending = !SortByPriceAscending;
+            });
+
         }
 
         private async Task LoadTypes()
         {
             try
             {
-                // Загрузка гендеров из базы данных или API (должно быть реализовано в ApiService)
                 ProductTypess = await _apiService.GetProductTypesAsync();
+
+                AllSuppliers = await _apiService.GetProvidersAsync();
+                Console.WriteLine($"Поставщиков загружено: {AllSuppliers.Count}");
+
+                foreach (var s in AllSuppliers)
+                    Console.WriteLine($"Поставщик: {s.ProviderName} (ID: {s.Id})");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to load genders: {ex.Message}");
+                Console.WriteLine($"Ошибка при загрузке типов/поставщиков: {ex.Message}");
             }
         }
+
+
 
         async void LoadDataAsync()
         {
             try
             {
-                // Загружаем типы продуктов из API
-                var typesFromApi = await _apiService.GetProductTypesAsync();
-
-                // Создаем элемент "Все типы"
-                var allTypes = new ProductType { Id = 0, TypeName = "Все типы" };
-
-                //// Формируем полный список типов
-                //ProductTypes = new List<ProductType> { allTypes };
-                //ProductTypes.AddRange(typesFromApi); // Добавляем остальные типы
-
-                // Загружаем все товары из API
+                // Загружаем данные
+                ProductTypess = await _apiService.GetProductTypesAsync();
+                AllSuppliers = await _apiService.GetProvidersAsync();
                 _allProducts = await _apiService.GetProductsAsync();
 
-                // Инициализируем список товаров
                 Products = new ObservableCollection<Product>(_allProducts);
 
-                // Устанавливаем "Все типы" по умолчанию
-                SelectedProductType = allTypes;
-
-                // Включаем фильтрацию сразу после загрузки данных
+                // Фильтрация запускается без установленных фильтров
                 FilterProducts();
             }
             catch (Exception ex)
@@ -137,36 +188,51 @@ namespace GrillHouseNNProg.ViewModels
             }
         }
 
+
         private void FilterProducts()
         {
-            if (SelectedProductType == null || _allProducts == null) return;
+            if (_allProducts == null) return;
 
-            // Фильтруем продукты по типу
-            var filtered = SelectedProductType.Id == 0
-                ? _allProducts // "Все типы" - показываем все товары
-                : _allProducts.Where(p => p.ProductTypeId == SelectedProductType.Id).ToList();
+            IEnumerable<Product> filtered = _allProducts;
 
-            // Обновляем список продуктов
+            if (SelectedProductType != null)
+                filtered = filtered.Where(p => p.ProductTypeId == SelectedProductType.Id);
+
+            if (SelectedSupplier != null)
+                filtered = filtered.Where(p => p.ProviderId == SelectedSupplier.Id);
+
+            if (!string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                var query = SearchQuery.Trim().ToLower();
+                filtered = filtered.Where(p =>
+                    p.ProductName.ToLower().Contains(query) ||
+                    (p.Provider?.ProviderName != null && p.Provider.ProviderName.ToLower().Contains(query)));
+            }
+
+            // Сортировка по цене
+            filtered = SortByPriceAscending
+                ? filtered.OrderBy(p => p.Price)
+                : filtered.OrderByDescending(p => p.Price);
+
             Products = new ObservableCollection<Product>(filtered);
-            IsProductListEmpty = Products.Count == 0; // Проверяем, пуст ли список товаров
+            IsProductListEmpty = !Products.Any();
 
-            Console.WriteLine($"Filtered {Products.Count} products for type {SelectedProductType.Id}");
+            Console.WriteLine($"Отфильтровано {Products.Count} товаров, сортировка: {(SortByPriceAscending ? "↑" : "↓")}");
         }
+
+
 
         public void ResetFilters()
         {
-            // Устанавливаем "Все типы" и сбрасываем фильтрацию
-            SelectedProductType = ProductTypess.FirstOrDefault(type => type.Id == 0); // "Все типы"
+            SelectedProductType = null;
+            SelectedSupplier = null;
+            SearchQuery = string.Empty;
 
-            // Теперь фильтруем продукты с учетом сброса фильтра
             Products = new ObservableCollection<Product>(_allProducts);
+            IsProductListEmpty = !Products.Any();
 
-            // Обновляем статус пустого списка
-            IsProductListEmpty = Products.Count == 0;
-
-            Console.WriteLine($"Filtered {Products.Count} products (reset filters)");
+            Console.WriteLine("Все фильтры сброшены");
         }
-
 
 
         public void GoToMainScreen() => Us = new MainScreen();

@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Net.Http.Json;
 using System.Diagnostics;
+using NewtonsoftJson = Newtonsoft.Json;
+using SystemJson = System.Text.Json;
 
 namespace GrillHouseNNProg.Resources
 {
@@ -156,9 +157,24 @@ namespace GrillHouseNNProg.Resources
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<ProductMovementDto>>(json);
         }
+
+        public async Task<List<Provider>> GetProvidersAsync()
+        {
+            var response = await _httpClient.GetAsync("/providers");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<List<Provider>>();
+        }
     }
 
+    public class Supplier
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }  // Соответствует ProviderName в модели Provider
 
+        // Можно добавить другие свойства, если они будут в API
+        // public string ContactInfo { get; set; }
+        // public string Address { get; set; }
+    }
 
     // DTO класс для движения товара
     public class ProductMovementDto

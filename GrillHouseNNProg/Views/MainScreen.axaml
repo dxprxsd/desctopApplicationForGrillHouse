@@ -19,16 +19,34 @@
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
-		<StackPanel Grid.Row="0" Orientation="Horizontal">
-			<ComboBox Margin="5" Grid.Row="0" ItemsSource="{Binding ProductTypess}" Background="White" HorizontalAlignment="Left" Width="200" VerticalAlignment="Center" DisplayMemberBinding="{Binding TypeName}" SelectedItem="{Binding SelectedProductType}" />
+		<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+			<ComboBox Margin="5" 
+					  ItemsSource="{Binding ProductTypess}" 
+					  Background="White" 
+					  HorizontalAlignment="Left" 
+					  Width="200" 
+					  VerticalAlignment="Center" 
+					  DisplayMemberBinding="{Binding TypeName}" 
+					  SelectedItem="{Binding SelectedProductType}" />
+			<!-- Комбобокс для поставщиков -->
+			<ComboBox Margin="5"
+					  ItemsSource="{Binding AllSuppliers}"
+					  Background="White"
+					  HorizontalAlignment="Left"
+					  Width="200"
+					  VerticalAlignment="Center"
+					  DisplayMemberBinding="{Binding ProviderName}"
+					  SelectedItem="{Binding SelectedSupplier}" />
 			<Button Content="Сбросить фильтры" Classes="ButtonTemplate" Command="{Binding ResetFiltersCommand}" />
+			<TextBox Text="{Binding SearchQuery}" Watermark="Поиск" Margin="5" Width="200" VerticalAlignment="Center"  />
+			<Button Content="{Binding SortButtonText}" Classes="ButtonTemplate" HorizontalAlignment="Center" Command="{Binding ToggleSortByPriceCommand}" />
 		</StackPanel>
 
 		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 			<ItemsControl ItemsSource="{Binding Products}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
-						<UniformGrid Columns="3" HorizontalAlignment="Center" />
+						<UniformGrid Columns="4" HorizontalAlignment="Center" />
 					</ItemsPanelTemplate>
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>

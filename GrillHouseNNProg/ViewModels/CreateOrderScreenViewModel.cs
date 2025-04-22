@@ -168,7 +168,7 @@ namespace GrillHouseNNProg.ViewModels
                 ErrorMessage = string.Empty;
 
                 // Логирование перед отправкой
-                Debug.WriteLine($"Создание заказа: ProductId={SelectedProduct.Id}, " +
+                Debug.WriteLine($"Создание продажи: ProductId={SelectedProduct.Id}, " +
                               $"DiscountId={SelectedDiscount?.Id}, Quantity={EnteredQuantity.Value}");
 
                 var result = await _apiService.CreateOrderAsync(
@@ -177,7 +177,7 @@ namespace GrillHouseNNProg.ViewModels
                     EnteredQuantity.Value
                 );
 
-                ErrorMessage = "Заказ успешно создан!";
+                ErrorMessage = "Продажа прошла успешно!";
                 SaveOrderToExcel(result);
             }
             catch (HttpRequestException httpEx) when (httpEx.Message.Contains("400"))

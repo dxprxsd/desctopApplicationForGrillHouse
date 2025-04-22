@@ -190,10 +190,8 @@ namespace GrillHouseNNProg.ViewModels
         {
             try
             {
-                // Получаем все движения товаров
                 var allMovements = await _apiService.GetProductMovementsAsync(DateTime.MinValue, DateTime.MaxValue);
 
-                // Фильтруем по дате на стороне клиента
                 var filteredMovements = allMovements?
                     .Where(m => m.MovementDate >= _startDate && m.MovementDate <= _endDate)
                     .ToList();
@@ -203,6 +201,19 @@ namespace GrillHouseNNProg.ViewModels
                     ErrorMessage = "Нет данных о движении товаров за выбранный период";
                     return;
                 }
+
+                // Группируем движения по товарам
+                var productGroups = filteredMovements
+                    .GroupBy(m => m.ProductId)
+                    .Select(g => new {
+                        ProductId = g.Key,
+                        ProductName = g.First().ProductName, // предполагая, что имя товара есть в движениях
+                        Received = g.Where(m => m.MovementType == "incoming").Sum(m => m.Quantity),
+                        Sold = g.Where(m => m.MovementType == "sale").Sum(m => m.Quantity),
+                        Stock = Products.FirstOrDefault(p => p.Id == g.Key)?.QuantityInStock ?? 0
+                    })
+                    .OrderBy(x => x.ProductName)
+                    .ToList();
 
                 string filePath = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -216,54 +227,40 @@ namespace GrillHouseNNProg.ViewModels
                         page.Margin(2, QuestPDF.Infrastructure.Unit.Centimetre);
                         page.DefaultTextStyle(x => x.FontFamily("Arial"));
 
-
                         page.Header().Column(column =>
                         {
                             column.Item().AlignCenter().Text("Отчет о движении товаров").FontSize(20).SemiBold();
                             column.Item().AlignCenter().Text($"за период с {_startDate:dd.MM.yyyy} по {_endDate:dd.MM.yyyy}").FontSize(14);
                         });
-                       
 
-                        // Таблица с данными
                         page.Content()
                             .Table(table =>
                             {
+                                // Устанавливаем ширину колонок
                                 table.ColumnsDefinition(columns =>
                                 {
                                     columns.RelativeColumn(3);  // Название товара
-                                    columns.RelativeColumn(1);  // Приход
-                                    columns.RelativeColumn(1);  // Продажа
-                                    columns.RelativeColumn(1);  // Остаток
+                                    columns.RelativeColumn(1);   // Приход
+                                    columns.RelativeColumn(1);   // Продажа
+                                    columns.RelativeColumn(1);   // Остаток
                                 });
 
-                                // Заголовки
+                                // Заголовки таблицы
                                 table.Header(header =>
                                 {
                                     header.Cell().Background("#EEE").Text("Товар").Bold();
-                                    header.Cell().Background("#EEE").Text("Приход").Bold();
-                                    header.Cell().Background("#EEE").Text("Продажа").Bold();
-                                    header.Cell().Background("#EEE").Text("Остаток").Bold();
+                                    header.Cell().Background("#EEE").AlignRight().Text("Приход").Bold();  // Выравнивание по правому краю
+                                    header.Cell().Background("#EEE").AlignRight().Text("Продажа").Bold(); // Выравнивание по правому краю
+                                    header.Cell().Background("#EEE").AlignRight().Text("Остаток").Bold(); // Выравнивание по правому краю
                                 });
 
-                                // Данные
-                                foreach (var product in Products)
+                                // Данные таблицы
+                                foreach (var product in productGroups)
                                 {
-                                    var productMovements = filteredMovements
-                                        .Where(m => m.ProductId == product.Id)
-                                        .ToList();
-
-                                    int received = productMovements
-                                        .Where(m => m.MovementType == "incoming")
-                                        .Sum(m => m.Quantity);
-
-                                    int sold = productMovements
-                                        .Where(m => m.MovementType == "sale")
-                                        .Sum(m => m.Quantity);
-
                                     table.Cell().BorderBottom(1).Padding(5).Text(product.ProductName);
-                                    table.Cell().BorderBottom(1).Padding(5).AlignRight().Text(received.ToString("+0;-#"));
-                                    table.Cell().BorderBottom(1).Padding(5).AlignRight().Text(sold.ToString("-0;-#"));
-                                    table.Cell().BorderBottom(1).Padding(5).AlignRight().Text((product.QuantityInStock ?? 0).ToString());
+                                    table.Cell().BorderBottom(1).Padding(5).AlignRight().Text(product.Received.ToString("+0;-#"));
+                                    table.Cell().BorderBottom(1).Padding(5).AlignRight().Text(product.Sold.ToString("-0;-#"));
+                                    table.Cell().BorderBottom(1).Padding(5).AlignRight().Text(product.Stock.ToString());
                                 }
                             });
 

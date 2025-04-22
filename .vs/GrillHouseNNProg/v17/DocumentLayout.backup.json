@@ -3,44 +3,48 @@
   "WorkspaceRootPath": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\viewmodels\\addingcountproductsscreenviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\viewmodels\\addingcountproductsscreenviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\viewmodels\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\viewmodels\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\viewmodels\\orderhistoryscreenviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\viewmodels\\orderhistoryscreenviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\views\\orderhistoryscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}",
-      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\views\\orderhistoryscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}"
+      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\views\\mainscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}",
+      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\views\\mainscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\resources\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\resources\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\models\\productmovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\models\\productmovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\viewmodels\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\viewmodels\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\views\\mainscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}",
-      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\views\\mainscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}"
+      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\viewmodels\\addingcountproductsscreenviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\viewmodels\\addingcountproductsscreenviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\views\\createorderscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}",
-      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\views\\createorderscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}"
+      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\viewlocator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\viewlocator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\views\\orderhistoryscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}",
+      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\views\\orderhistoryscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\viewmodels\\orderhistoryscreenviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\viewmodels\\orderhistoryscreenviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\views\\addingcountproductsscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}",
+      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\views\\addingcountproductsscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\viewmodels\\createorderscreenviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\viewmodels\\createorderscreenviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\views\\addingcountproductsscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}",
-      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\views\\addingcountproductsscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}"
+      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\views\\createorderscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}",
+      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\views\\createorderscreen.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\models\\productmovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\models\\productmovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -49,10 +53,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\views\\mainwindow.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}",
       "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\views\\mainwindow.axaml||{6D5344A2-2FCD-49DE-A09D-6A14FD1B1224}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|solutionrelative:grillhousennprog\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EA624602-0392-4A23-8235-BC299F33499C}|GrillHouseNNProg\\GrillHouseNNProg.csproj|c:\\users\\admin\\source\\repos\\grillhousennprog\\grillhousennprog\\models\\producttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -70,17 +70,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "ApiService.cs",
               "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Resources\\ApiService.cs",
               "RelativeDocumentMoniker": "GrillHouseNNProg\\Resources\\ApiService.cs",
               "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Resources\\ApiService.cs",
               "RelativeToolTip": "GrillHouseNNProg\\Resources\\ApiService.cs",
-              "ViewState": "AgIAAI0AAAAAAAAAAADwv5UAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAHwAAAAAAAAAAAAuwKcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-10T13:32:44.512Z",
               "IsPinned": true,
@@ -88,13 +88,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "MainWindowViewModel.cs",
               "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\ViewModels\\MainWindowViewModel.cs",
               "RelativeDocumentMoniker": "GrillHouseNNProg\\ViewModels\\MainWindowViewModel.cs",
               "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\ViewModels\\MainWindowViewModel.cs",
               "RelativeToolTip": "GrillHouseNNProg\\ViewModels\\MainWindowViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFIAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAmwCsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-26T10:40:10.006Z",
               "IsPinned": true,
@@ -102,12 +102,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "MainScreen.axaml",
               "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Views\\MainScreen.axaml",
               "RelativeDocumentMoniker": "GrillHouseNNProg\\Views\\MainScreen.axaml",
-              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Views\\MainScreen.axaml",
-              "RelativeToolTip": "GrillHouseNNProg\\Views\\MainScreen.axaml",
+              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Views\\MainScreen.axaml*",
+              "RelativeToolTip": "GrillHouseNNProg\\Views\\MainScreen.axaml*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-03-26T10:50:55.622Z",
               "IsPinned": true,
@@ -115,13 +115,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "AddingCountProductsScreenViewModel.cs",
               "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\ViewModels\\AddingCountProductsScreenViewModel.cs",
               "RelativeDocumentMoniker": "GrillHouseNNProg\\ViewModels\\AddingCountProductsScreenViewModel.cs",
-              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\ViewModels\\AddingCountProductsScreenViewModel.cs*",
-              "RelativeToolTip": "GrillHouseNNProg\\ViewModels\\AddingCountProductsScreenViewModel.cs*",
-              "ViewState": "AgIAANMAAAAAAAAAAADwv+AAAAAXAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\ViewModels\\AddingCountProductsScreenViewModel.cs",
+              "RelativeToolTip": "GrillHouseNNProg\\ViewModels\\AddingCountProductsScreenViewModel.cs",
+              "ViewState": "AgIAAGUAAAAAAAAAAAAwwHEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-26T10:33:26.767Z",
               "IsPinned": true,
@@ -129,7 +129,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 7,
               "Title": "AddingCountProductsScreen.axaml",
               "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Views\\AddingCountProductsScreen.axaml",
               "RelativeDocumentMoniker": "GrillHouseNNProg\\Views\\AddingCountProductsScreen.axaml",
@@ -137,8 +137,7 @@
               "RelativeToolTip": "GrillHouseNNProg\\Views\\AddingCountProductsScreen.axaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-03-26T10:48:06.663Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Bookmark",
@@ -150,66 +149,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "CreateOrderScreen.axaml",
-              "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Views\\CreateOrderScreen.axaml",
-              "RelativeDocumentMoniker": "GrillHouseNNProg\\Views\\CreateOrderScreen.axaml",
-              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Views\\CreateOrderScreen.axaml",
-              "RelativeToolTip": "GrillHouseNNProg\\Views\\CreateOrderScreen.axaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-03-26T11:07:51.728Z",
+              "DocumentIndex": 4,
+              "Title": "ViewLocator.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\ViewLocator.cs",
+              "RelativeDocumentMoniker": "GrillHouseNNProg\\ViewLocator.cs",
+              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\ViewLocator.cs",
+              "RelativeToolTip": "GrillHouseNNProg\\ViewLocator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-21T11:38:21.234Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "ProductMovement.cs",
-              "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Models\\ProductMovement.cs",
-              "RelativeDocumentMoniker": "GrillHouseNNProg\\Models\\ProductMovement.cs",
-              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Models\\ProductMovement.cs",
-              "RelativeToolTip": "GrillHouseNNProg\\Models\\ProductMovement.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-11T18:47:28.797Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "OrderHistoryScreenViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\ViewModels\\OrderHistoryScreenViewModel.cs",
-              "RelativeDocumentMoniker": "GrillHouseNNProg\\ViewModels\\OrderHistoryScreenViewModel.cs",
-              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\ViewModels\\OrderHistoryScreenViewModel.cs",
-              "RelativeToolTip": "GrillHouseNNProg\\ViewModels\\OrderHistoryScreenViewModel.cs",
-              "ViewState": "AgIAAGoAAAAAAAAAAADwv30AAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-25T17:52:41.284Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Order.cs",
-              "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Models\\Order.cs",
-              "RelativeDocumentMoniker": "GrillHouseNNProg\\Models\\Order.cs",
-              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Models\\Order.cs",
-              "RelativeToolTip": "GrillHouseNNProg\\Models\\Order.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAqwAoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-11T17:49:07.048Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "OrderHistoryScreen.axaml",
               "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Views\\OrderHistoryScreen.axaml",
               "RelativeDocumentMoniker": "GrillHouseNNProg\\Views\\OrderHistoryScreen.axaml",
               "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Views\\OrderHistoryScreen.axaml",
               "RelativeToolTip": "GrillHouseNNProg\\Views\\OrderHistoryScreen.axaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-03-26T10:49:41.201Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-26T10:49:41.201Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "OrderHistoryScreenViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\ViewModels\\OrderHistoryScreenViewModel.cs",
+              "RelativeDocumentMoniker": "GrillHouseNNProg\\ViewModels\\OrderHistoryScreenViewModel.cs",
+              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\ViewModels\\OrderHistoryScreenViewModel.cs",
+              "RelativeToolTip": "GrillHouseNNProg\\ViewModels\\OrderHistoryScreenViewModel.cs",
+              "ViewState": "AgIAAIEAAAAAAAAAAAAmwI8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-25T17:52:41.284Z"
             },
             {
               "$type": "Document",
@@ -219,14 +191,48 @@
               "RelativeDocumentMoniker": "GrillHouseNNProg\\ViewModels\\CreateOrderScreenViewModel.cs",
               "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\ViewModels\\CreateOrderScreenViewModel.cs",
               "RelativeToolTip": "GrillHouseNNProg\\ViewModels\\CreateOrderScreenViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAACAAAAAAAAAAAAAAwCsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-26T11:16:22.932Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-26T11:16:22.932Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CreateOrderScreen.axaml",
+              "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Views\\CreateOrderScreen.axaml",
+              "RelativeDocumentMoniker": "GrillHouseNNProg\\Views\\CreateOrderScreen.axaml",
+              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Views\\CreateOrderScreen.axaml",
+              "RelativeToolTip": "GrillHouseNNProg\\Views\\CreateOrderScreen.axaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-03-26T11:07:51.728Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ProductMovement.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Models\\ProductMovement.cs",
+              "RelativeDocumentMoniker": "GrillHouseNNProg\\Models\\ProductMovement.cs",
+              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Models\\ProductMovement.cs",
+              "RelativeToolTip": "GrillHouseNNProg\\Models\\ProductMovement.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T18:47:28.797Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 11,
+              "Title": "Order.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Models\\Order.cs",
+              "RelativeDocumentMoniker": "GrillHouseNNProg\\Models\\Order.cs",
+              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Models\\Order.cs",
+              "RelativeToolTip": "GrillHouseNNProg\\Models\\Order.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAqwAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T17:49:07.048Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
               "Title": "MainWindow.axaml",
               "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Views\\MainWindow.axaml",
               "RelativeDocumentMoniker": "GrillHouseNNProg\\Views\\MainWindow.axaml",
@@ -234,18 +240,6 @@
               "RelativeToolTip": "GrillHouseNNProg\\Views\\MainWindow.axaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-03-24T15:35:15.803Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Product.cs",
-              "DocumentMoniker": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Models\\Product.cs",
-              "RelativeDocumentMoniker": "GrillHouseNNProg\\Models\\Product.cs",
-              "ToolTip": "C:\\Users\\admin\\source\\repos\\GrillHouseNNProg\\GrillHouseNNProg\\Models\\Product.cs",
-              "RelativeToolTip": "GrillHouseNNProg\\Models\\Product.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAqwAgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-10T13:44:26.833Z"
             },
             {
               "$type": "Document",
