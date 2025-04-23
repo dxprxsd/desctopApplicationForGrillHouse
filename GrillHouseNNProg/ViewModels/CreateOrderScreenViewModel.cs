@@ -253,6 +253,12 @@ namespace GrillHouseNNProg.ViewModels
 
                 workbook.SaveAs(orderFilePath);
             }
+            //код для открытия файла с чеком после продажи
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = orderFilePath,
+                UseShellExecute = true
+            });
         }
 
 

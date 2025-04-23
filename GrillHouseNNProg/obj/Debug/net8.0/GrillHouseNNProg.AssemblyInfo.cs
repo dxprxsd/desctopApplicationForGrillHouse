@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GrillHouseNNProg")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e490bab753a328d9487fe0654481713a838922ca")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+af2e4c4deb76da6124c9ca5a02771ccfa5e25552")]
 [assembly: System.Reflection.AssemblyProductAttribute("GrillHouseNNProg")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GrillHouseNNProg")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

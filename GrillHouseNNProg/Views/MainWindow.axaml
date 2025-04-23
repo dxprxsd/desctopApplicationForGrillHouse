@@ -67,7 +67,13 @@
 					<DropShadowEffect BlurRadius="15" Opacity="0.7"/>
 				</Border.Effect>
 				<StackPanel Orientation="Vertical">
-					<Button Content="Оформление покупки" Command="{Binding GoToCreateOrderScreen}" Classes="ButtonTemplate" Width="170" Height="36" Margin="5" />
+					<!--<Button Content="Оформление покупки" Command="{Binding GoToCreateOrderScreen}" Classes="ButtonTemplate" Width="170" Height="36" Margin="5" />-->
+					<Button Content="Оформление покупки"
+						Command="{Binding OpenSaleWindowCommand}"
+						Classes="ButtonTemplate"
+						Width="170"
+						Height="36"
+						Margin="5" />
 				</StackPanel>
 			</Border>
 

@@ -1,0 +1,95 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="using:GrillHouseNNProg.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
+        x:Class="GrillHouseNNProg.SaleWindow"
+		x:DataType="vm:CreateOrderScreenViewModel"
+        Title="Окно продаж"
+		Width="500"
+        Height="500">
+	
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="70" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="50" />
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0" Grid.ColumnSpan="2" Background="#A7262F">
+			<Grid.Effect>
+				<DropShadowEffect BlurRadius="10" Color="Black" Opacity="0.5" />
+			</Grid.Effect>
+
+			<TextBlock Text="Оформление продажи"
+					   FontSize="29"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center"
+					   FontWeight="Bold"
+					   Foreground="White"
+					   Margin="5"/>
+		</Grid>
+
+		<StackPanel Grid.Row="1" Margin="5" Width="300">
+			<StackPanel Margin="10">
+				<TextBlock Text="Товар:" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
+				<!-- Выбор товара -->
+				<ComboBox
+						  ItemsSource="{Binding Products}"
+						  Background="White"
+						  HorizontalAlignment="Center"
+						  Width="200"
+						  VerticalAlignment="Center"
+						  DisplayMemberBinding="{Binding ProductName}"
+						  SelectedItem="{Binding SelectedProduct}" />
+			</StackPanel>
+
+			<StackPanel Margin="10">
+				<TextBlock Text="Количество товара:" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
+
+				<!-- Ввод количества -->
+				<TextBox HorizontalAlignment="Center"
+						 Width="200"
+						 VerticalAlignment="Center"
+						 Text="{Binding EnteredQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue='' }" />
+			</StackPanel>
+
+			<StackPanel Margin="10">
+				<TextBlock Text="Цена товара:" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
+
+				<!-- Автоматическая цена -->
+				<TextBlock Text="{Binding ProductPrice}"
+						   HorizontalAlignment="Center"
+						   FontWeight="Bold"
+						   Foreground="Blue"
+						   VerticalAlignment="Center" />
+
+			</StackPanel>
+			<StackPanel Margin="10">
+				<TextBlock Text="Скидка:" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
+
+				<!-- Выбор скидки -->
+				<ComboBox Margin="5"
+						  ItemsSource="{Binding Discounts}"
+						  Background="White"
+						  HorizontalAlignment="Center"
+						  Width="200"
+						  VerticalAlignment="Center"
+						  DisplayMemberBinding="{Binding DiscountPercent}"
+						  SelectedItem="{Binding SelectedDiscount}" />
+			</StackPanel>
+			
+			<!-- Кнопка оформления заказа -->
+			<Button Margin="5"
+					Classes="ButtonTemplate"
+					Content="Оформить покупку"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					Command="{Binding CreateOrderCommand}" />
+
+			<TextBlock Text="{Binding ErrorMessage}" Width="800" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
+
+		</StackPanel>
+	</Grid>
+</Window>

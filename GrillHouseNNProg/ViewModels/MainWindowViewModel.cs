@@ -13,6 +13,8 @@ using DocumentFormat.OpenXml.ExtendedProperties;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Threading.Tasks;
 using System.Reactive;
+using Avalonia.Controls.ApplicationLifetimes;
+using System.Windows.Input;
 
 namespace GrillHouseNNProg.ViewModels
 {
@@ -133,6 +135,8 @@ namespace GrillHouseNNProg.ViewModels
 
         public ReactiveCommand<Unit, Unit> ResetFiltersCommand { get; }
         public ReactiveCommand<Unit, Unit> ToggleSortByPriceCommand { get; }
+        public ReactiveCommand<Unit, Unit> OpenSaleWindowCommand { get; }
+
 
         public MainWindowViewModel()
         {
@@ -145,7 +149,7 @@ namespace GrillHouseNNProg.ViewModels
             {
                 SortByPriceAscending = !SortByPriceAscending;
             });
-
+            OpenSaleWindowCommand = ReactiveCommand.Create(OpenSaleWindow);
         }
 
         private async Task LoadTypes()
@@ -218,6 +222,29 @@ namespace GrillHouseNNProg.ViewModels
             IsProductListEmpty = !Products.Any();
 
             Console.WriteLine($"Отфильтровано {Products.Count} товаров, сортировка: {(SortByPriceAscending ? "↑" : "↓")}");
+        }
+
+        /// <summary>
+        /// Открывает окно для продажи
+        /// </summary>
+        private void OpenSaleWindow()
+        {
+            try
+            {
+                var saleWindow = new SaleWindow
+                {
+                    DataContext = new CreateOrderScreenViewModel(_apiService)
+                };
+
+                var desktop = Avalonia.Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+                var mainWindow = desktop?.MainWindow;
+
+                saleWindow.ShowDialog(mainWindow);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при открытии окна SaleWindow: {ex.Message}");
+            }
         }
 
 
