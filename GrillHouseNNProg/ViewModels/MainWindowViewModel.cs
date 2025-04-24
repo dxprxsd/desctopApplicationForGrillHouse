@@ -136,6 +136,7 @@ namespace GrillHouseNNProg.ViewModels
         public ReactiveCommand<Unit, Unit> ResetFiltersCommand { get; }
         public ReactiveCommand<Unit, Unit> ToggleSortByPriceCommand { get; }
         public ReactiveCommand<Unit, Unit> OpenSaleWindowCommand { get; }
+        public ReactiveCommand<Unit, Unit> OpenProductArrivalWindowCommand { get; }
 
 
         public MainWindowViewModel()
@@ -150,6 +151,7 @@ namespace GrillHouseNNProg.ViewModels
                 SortByPriceAscending = !SortByPriceAscending;
             });
             OpenSaleWindowCommand = ReactiveCommand.Create(OpenSaleWindow);
+            OpenProductArrivalWindowCommand = ReactiveCommand.Create(OpenProductArrivalWindow);
         }
 
         private async Task LoadTypes()
@@ -244,6 +246,29 @@ namespace GrillHouseNNProg.ViewModels
             catch (Exception ex)
             {
                 Console.WriteLine($"Ошибка при открытии окна SaleWindow: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Открывает окно для прихода
+        /// </summary>
+        private void OpenProductArrivalWindow()
+        {
+            try
+            {
+                var productArrivalWindow = new ProductArrivalWindow
+                {
+                    DataContext = new AddingCountProductsScreenViewModel(_apiService)
+                };
+
+                var desktop = Avalonia.Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+                var mainWindow = desktop?.MainWindow;
+
+                productArrivalWindow.ShowDialog(mainWindow);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при открытии окна ProductArrivalWindow: {ex.Message}");
             }
         }
 

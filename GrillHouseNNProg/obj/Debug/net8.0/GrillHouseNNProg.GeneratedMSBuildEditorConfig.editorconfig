@@ -37,5 +37,8 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [C:/Users/admin/source/repos/GrillHouseNNProg/GrillHouseNNProg/Views/OrderHistoryScreen.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/admin/source/repos/GrillHouseNNProg/GrillHouseNNProg/Views/ProductArrivalWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/admin/source/repos/GrillHouseNNProg/GrillHouseNNProg/Views/SaleWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

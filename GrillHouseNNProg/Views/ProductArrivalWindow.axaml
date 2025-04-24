@@ -1,0 +1,79 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="using:GrillHouseNNProg.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="500"
+        x:Class="GrillHouseNNProg.ProductArrivalWindow"
+		x:DataType="vm:AddingCountProductsScreenViewModel"
+        Title="Окно прихода товаров"
+		Icon="/Assets/logoGrillHouse.png"
+		Width="600"
+        Height="500">
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="70" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="80" />
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0" Grid.ColumnSpan="2" Background="#A7262F">
+			<Grid.Effect>
+				<DropShadowEffect BlurRadius="10" Color="Black" Opacity="0.5" />
+			</Grid.Effect>
+
+			<TextBlock Text="Добавление товара"
+					   FontSize="29"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center"
+					   FontWeight="Bold"
+					   Foreground="White"
+					   Margin="5"/>
+		</Grid>
+
+		<StackPanel  Grid.Row="1" Margin="5" Width="300">
+			<StackPanel Margin="5" >
+				<TextBlock Text="Товар" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
+				<ComboBox ItemsSource="{Binding Products}" Background="White" HorizontalAlignment="Center" Width="200" VerticalAlignment="Center" DisplayMemberBinding="{Binding ProductName}" SelectedItem="{Binding SelectedProduct}" />
+			</StackPanel>
+
+			<StackPanel Margin="5" >
+				<TextBlock Text="Количество товара:" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
+				<!-- Привязка введенного количества к EnteredQuantity -->
+				<TextBox HorizontalAlignment="Center" Width="200" VerticalAlignment="Center"
+						 Text="{Binding EnteredQuantity, Mode=TwoWay}" />
+			</StackPanel>
+			
+			<!-- Кнопка для обновления количества товара -->
+			<Button Margin="5" Classes="ButtonTemplate" Content="Обновить количество" HorizontalAlignment="Center" VerticalAlignment="Center"
+					Command="{Binding UpdateProductStockCommand}" />
+
+			<TextBlock Text="{Binding ErrorMessage}" Width="600" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
+		</StackPanel>
+
+		<Border Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" BorderBrush="Black" BorderThickness="0">
+			<Border.Effect>
+				<DropShadowEffect BlurRadius="15" Opacity="0.7"/>
+			</Border.Effect>
+			<StackPanel Orientation="Vertical">
+				<!-- Кнопка для обновления количества товара -->
+				<Button Margin="5" Classes="ButtonTemplate" Content="Собрать отчет о движении товара" HorizontalAlignment="Right" VerticalAlignment="Center"
+						Command="{Binding ExportToPdf}" />
+			</StackPanel>
+		</Border>
+
+
+
+		<StackPanel Grid.Row="2" Orientation="Vertical">
+			<DatePicker SelectedDate="{Binding StartDate}" Margin="5"/>
+
+			<DatePicker SelectedDate="{Binding EndDate}" Margin="5"/>
+		</StackPanel>
+
+
+	</Grid>
+	
+	
+	
+</Window>
